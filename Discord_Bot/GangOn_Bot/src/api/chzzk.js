@@ -1,4 +1,5 @@
 // https://api.chzzk.naver.com/service/v1/channels/${channelID}                 >> 채널 정보
+// https://api.chzzk.naver.com/polling/v1/channels/${channelID}/live-status     >> 라이브 상태
 // https://api.chzzk.naver.com/service/v1/channels/${chhanelID}/live-detail     >> 라이브 디테일
 // https://api.chzzk.naver.com/service/v1/channels/${chhanelID}/videos          >> 채널 비디오
 // https://api.chzzk.naver.com/service/v1/videos/{video_no}                     >> 비디오 상세정보
