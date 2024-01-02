@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
-import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
+import { Client, EmbedBuilder, GatewayIntentBits, REST, Routes } from 'discord.js';
+import { ChzzkApi } from './api/chzzk.js';
 
 config(); // env 초기화
 
@@ -42,24 +43,78 @@ const commands = [
     description: 'will say pong'
   },
   {
-    name: 'foo',
-    description: 'will say bar'
-  },
-  {
-    name: 'discord',
-    description: 'will say hi discord'
+    name: "get_channel_info",
+    description: '스트리머의 채널',
+    options: [
+      {
+        name: 'channel_id',
+        description: '채널 정보',
+        type: 3,
+        required: true,
+      }
+    ]
   }
 ]
 
 const commandsList = {
   ping: 'pong',
-  foo: 'bar',
-  discord: 'hi discord'
+  channelInfo: '1234'
 }
 
 // 2. sent Application Command 를 감지 후 이벤트 발생
 client.on('interactionCreate', async (interaction) => {
   if(!interaction.isChatInputCommand()) return;
+
+  if(interaction.commandName === 'get_channel_info') {
+    const tempChannelID = interaction.options.get('channel_id').value;
+
+    if(tempChannelID.length !== 32) {
+      interaction.reply('채널 아이디 길이가 다릅니다.');
+
+      return;
+    }
+
+    const channelRow = new ChzzkApi(tempChannelID);
+
+    channelRow.getApiChannelInfo()
+      .then((result) => {
+
+        console.log(channelRow);
+        
+        // 성공적
+        if(result.status) {
+          const embed = new EmbedBuilder()
+          .setTitle('치지직 비공식 API')
+          .setDescription(`해당 방송은 ${channelRow.channelName}님의 방송 입니다. \n\n`)
+          .setColor('Random')
+          .addFields(
+            {
+              name: '채널 이름',
+              value: channelRow.channelName,
+              inline: true
+            },
+            {
+              name: '채널 팔로우 수',
+              value: channelRow.followerCount.toString(),
+              inline: true
+            },
+            {
+              name: '채널 설명',
+              value: channelRow.channelDescription ? channelRow.channelDescription : 'Empty'
+            }
+          )
+          .setImage(channelRow.channelImageUrl)
+            
+
+          interaction.reply({embeds: [embed]});
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+
+  }
 
   // if 또는 switch로 도배하기에는 너무 코드가 더러워질것 같아서 객체로 따로 빼내주어 관리
   if(commandsList.hasOwnProperty(interaction.commandName)) {
