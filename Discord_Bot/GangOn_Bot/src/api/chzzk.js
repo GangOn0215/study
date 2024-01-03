@@ -4,22 +4,22 @@
 // https://api.chzzk.naver.com/service/v1/channels/${chhanelID}/videos          >> 채널 비디오
 // https://api.chzzk.naver.com/service/v1/videos/{video_no}                     >> 비디오 상세정보
 
-import axios from 'axios';
-import { config } from 'dotenv';
+import axios from "axios";
+import { config } from "dotenv";
 
 config();
 
 class ChzzkApi {
   constructor(channelID) {
-    this.channelID = channelID || null;
-    this.channelName = null;
-    this.channelImageUrl = null;
-    this.verifiedMark = false;
-    this.channelType = null;
-    this.channelDescription = '';
+    this.channelID = channelID || null; // 채널 아이디
+    this.channelName = null; // 채널 이름
+    this.channelImageUrl = null; // 채널 이미지
+    this.verifiedMark = false; // 인증 마크 (?)
+    this.channelType = null; // 채널 타입 { STREAMING }
+    this.channelDescription = ""; // 채널 설명
     this.followerCount = null;
     this.openLive = false;
-    this.baseURL = 'https://api.chzzk.naver.com/service/v1';
+    this.baseURL = "https://api.chzzk.naver.com";
   }
 
   setchannelID(channelID) {
@@ -30,28 +30,27 @@ class ChzzkApi {
     return this.channelID;
   }
 
-  getApiChannelInfo() {
+  getAxiosChannelInfo() {
     return new Promise((reslove, reject) => {
       axios({
         method: "get",
-        url: `${this.baseURL}/channels/${this.channelID}`,
+        url: `${this.baseURL}/service/v1/channels/${this.channelID}`,
       })
         .then((res) => {
-
           // 통신이 성공적
-          if(res.data.code !== 200) {
+          if (res.data.code !== 200) {
             reject(res.data.message);
 
             return;
           }
-          
+
           this.setChannelInfo(res.data.content);
-          reslove({status: true});
+          reslove({ status: true });
         })
         .catch((error) => {
           reject(error);
         });
-    })
+    });
   }
 
   setChannelInfo(row) {
@@ -59,10 +58,10 @@ class ChzzkApi {
     this.channelImageUrl = row.channelImageUrl;
     this.verifiedMark = row.verifiedMark;
     this.channelType = row.channelType;
-    this.channelDescription = row.channelDescription || '';
+    this.channelDescription = row.channelDescription || "";
     this.followerCount = row.followerCount;
     this.openLive = row.openLive;
   }
 }
 
-export { ChzzkApi } 
+export { ChzzkApi };

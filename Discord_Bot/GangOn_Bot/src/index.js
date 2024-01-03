@@ -7,6 +7,7 @@ import {
   Routes,
 } from "discord.js";
 import { ChzzkApi } from "./api/chzzk.js";
+import { LiveDetail } from "./api/LiveStatus.js";
 
 config(); // env 초기화
 
@@ -59,6 +60,18 @@ const commands = [
       },
     ],
   },
+  {
+    name: "get_live_info",
+    description: "스트리머 라이브 정보",
+    options: [
+      {
+        name: "channel_id",
+        description: "채널 아이디",
+        type: 3,
+        required: true,
+      },
+    ],
+  },
 ];
 
 const commandsList = {
@@ -69,57 +82,109 @@ const commandsList = {
 // 2. sent Application Command 를 감지 후 이벤트 발생
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
+  let channelID = null;
+  let result = null;
 
-  if (interaction.commandName === "get_channel_info") {
-    const tempChannelID = interaction.options.get("channel_id").value;
+  switch (interaction.commandName) {
+    case "get_channel_info":
+      channelID = interaction.options.get("channel_id").value;
 
-    if (tempChannelID.length !== 32) {
-      interaction.reply("채널 아이디 길이가 다릅니다.");
+      if (channelID.length !== 32) {
+        interaction.reply("채널 아이디 길이가 다릅니다.");
 
-      return;
-    }
+        return;
+      }
 
-    const channelRow = new ChzzkApi(tempChannelID);
+      const channelRow = new ChzzkApi(channelID);
 
-    channelRow
-      .getApiChannelInfo()
-      .then((result) => {
-        console.log(channelRow);
+      result = await channelRow.getAxiosChannelInfo();
 
-        // 성공적
-        if (result.status) {
-          const embed = new EmbedBuilder()
-            .setTitle("치지직 비공식 API")
-            .setDescription(
-              `해당 방송은 ${channelRow.channelName}님의 방송 입니다. \n\n`
-            )
-            .setColor("Random")
-            .addFields(
-              {
-                name: "채널 이름",
-                value: channelRow.channelName,
-                inline: true,
-              },
-              {
-                name: "채널 팔로우 수",
-                value: channelRow.followerCount.toString(),
-                inline: true,
-              },
-              {
-                name: "채널 설명",
-                value: channelRow.channelDescription
-                  ? channelRow.channelDescription
-                  : "Empty",
-              }
-            )
-            .setImage(channelRow.channelImageUrl);
+      console.log(channelRow);
 
-          interaction.reply({ embeds: [embed] });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      // 성공적
+      if (result.status) {
+        const embed = new EmbedBuilder()
+          .setAuthor({
+            name: channelRow.channelName,
+            iconURL: channelRow.channelImageUrl,
+            url: `https://chzzk.naver.com/${channelRow.channelID}`,
+          })
+          .setColor("Yellow")
+          .addFields(
+            {
+              name: "팔로우",
+              value: channelRow.followerCount.toLocaleString(),
+              inline: true,
+            },
+            {
+              name: "채널 설명",
+              value: channelRow.channelDescription
+                ? channelRow.channelDescription
+                : "Empty",
+              inline: true,
+            },
+            {
+              name: "라이브 상태",
+              value: channelRow.openLive ? "ON" : "OFF",
+            }
+          );
+
+        // { name: "\u200B", value: "\u200B" },
+        interaction.reply({ embeds: [embed] });
+      } else {
+        interaction.reply(`에러가 발생 했습니다. ${result}`);
+        console.log(result);
+      }
+
+      break;
+
+    case "get_live_info":
+      channelID = interaction.options.get("channel_id").value;
+
+      if (channelID.length !== 32) {
+        interaction.reply("채널 아이디 길이가 다릅니다.");
+
+        return;
+      }
+
+      const channelLiveDetail = new LiveDetail(channelID);
+
+      result = await channelLiveDetail.getAxiosLiveDetail();
+
+      // Success
+      if (result.status) {
+        const embed = new EmbedBuilder()
+          .setAuthor({
+            name: `${channelLiveDetail.channelName} 님이 방송중 입니다!`,
+            iconURL: channelLiveDetail.channelImageUrl,
+            url: `https://chzzk.naver.com/${channelLiveDetail.channelID}`,
+          })
+          .setTitle(channelLiveDetail.liveTitle)
+          .setURL(`https://chzzk.naver.com/live/${channelLiveDetail.channelID}`)
+          .addFields(
+            {
+              name: "Game",
+              value: channelLiveDetail.liveCategory,
+              inline: true,
+            },
+            {
+              name: "시청자 수",
+              value: channelLiveDetail.concurrentUserCount.toString(),
+              inline: true,
+            }
+          )
+          .setImage(channelLiveDetail.liveImageUrl)
+          .setTimestamp();
+
+        // { name: "\u200B", value: "\u200B" },
+        interaction.reply({ embeds: [embed] });
+      } else {
+        interaction.reply(`ERROR: ${result.error}`);
+      }
+
+      console.log(channelLiveDetail);
+
+      break;
   }
 
   // if 또는 switch로 도배하기에는 너무 코드가 더러워질것 같아서 객체로 따로 빼내주어 관리
