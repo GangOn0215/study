@@ -1,6 +1,8 @@
 import { config } from "dotenv";
 import {
+  ButtonStyle,
   Client,
+  ComponentType,
   EmbedBuilder,
   GatewayIntentBits,
   REST,
@@ -153,31 +155,47 @@ client.on("interactionCreate", async (interaction) => {
 
       // Success
       if (result.status) {
-        const embed = new EmbedBuilder()
-          .setAuthor({
-            name: `${channelLiveDetail.channelName} 님이 방송중 입니다!`,
-            iconURL: channelLiveDetail.channelImageUrl,
-            url: `https://chzzk.naver.com/${channelLiveDetail.channelID}`,
-          })
-          .setTitle(channelLiveDetail.liveTitle)
-          .setURL(`https://chzzk.naver.com/live/${channelLiveDetail.channelID}`)
-          .addFields(
-            {
-              name: "Game",
-              value: channelLiveDetail.liveCategory,
-              inline: true,
-            },
-            {
-              name: "시청자 수",
-              value: channelLiveDetail.concurrentUserCount.toString(),
-              inline: true,
-            }
-          )
-          .setImage(channelLiveDetail.liveImageUrl)
-          .setTimestamp();
-
+        console.log(channelLiveDetail.liveImageUrl);
         // { name: "\u200B", value: "\u200B" },
-        interaction.reply({ embeds: [embed] });
+        interaction.reply({
+          embeds: [
+            {
+              author: {
+                name: `${channelLiveDetail.channelName} 님이 방송중 입니다!`,
+                iconURL: channelLiveDetail.channelImageUrl,
+                url: `https://chzzk.naver.com/${channelLiveDetail.channelID}`,
+              },
+              title: channelLiveDetail.liveTitle,
+              fields: [
+                {
+                  name: "Game",
+                  value: channelLiveDetail.liveCategory,
+                  inline: true,
+                },
+                {
+                  name: "시청자 수",
+                  value: channelLiveDetail.concurrentUserCount.toString(),
+                  inline: true,
+                },
+              ],
+              image: { url: channelLiveDetail.liveImageUrl },
+              timestamp: channelLiveDetail.openDate,
+            },
+          ],
+          components: [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  type: ComponentType.Button,
+                  label: "방송가기",
+                  style: ButtonStyle.Link,
+                  url: `https://chzzk.naver.com/live/${channelLiveDetail.channelID}`,
+                },
+              ],
+            },
+          ],
+        });
       } else {
         interaction.reply(`ERROR: ${result.error}`);
       }

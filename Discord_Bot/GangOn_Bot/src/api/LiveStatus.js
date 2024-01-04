@@ -5,10 +5,7 @@
 // https://api.chzzk.naver.com/service/v1/videos/{video_no}                     >> 비디오 상세정보
 
 import axios from "axios";
-import { config } from "dotenv";
 import { ChzzkApi } from "./chzzk.js";
-
-config();
 
 class LiveDetail extends ChzzkApi {
   constructor(channelID) {

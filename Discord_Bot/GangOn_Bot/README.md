@@ -35,6 +35,11 @@
 
 - [x] discord.js live-detail axios로 가져온 뒤 class로 처리 후 embed 뿌리기
 
+`24.01.04`
+
+- [x] aws ec2 새로운 인스턴스 만들고 거기에 node.js 셋팅
+- [x] github repository 새로 파서 discord_bot 자체를 이동
+
 `future`
 
 - [ ] setInterval로 어떻게 로직 짤지 구상
