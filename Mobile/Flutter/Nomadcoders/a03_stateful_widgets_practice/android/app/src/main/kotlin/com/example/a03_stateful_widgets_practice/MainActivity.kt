@@ -1,0 +1,6 @@
+package com.example.a03_stateful_widgets_practice
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
