@@ -1,19 +1,29 @@
+import 'package:a04_user_interface/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const App());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+          backgroundColor: const Color(0xFFE7626C),
         ),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            color: Color(0XFF232B55),
+          ),
+        ),
+        cardColor: const Color(0XFFF4EDDB),
+      ),
+      home: const Scaffold(
+        body: HomeScreen(),
       ),
     );
   }
