@@ -1,3 +1,4 @@
+import 'package:a03_ui_challenge/widget/currency_card.dart';
 import 'package:a03_ui_challenge/widget/my_button.dart';
 import 'package:flutter/material.dart';
 
@@ -13,173 +14,138 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF181818),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 80,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'Hey, Coxe',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        'Welcome back',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Text(
-                'Total Balance',
-                style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white.withOpacity(0.8),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 80,
                 ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                '₩11 134 290',
-                style: TextStyle(
-                  fontSize: 42,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MyButton(
-                    text: 'Transfer',
-                    bgColor: const Color(0XFFF2B33A),
-                    textColor: Colors.black,
-                  ),
-                  MyButton(
-                    text: 'Request',
-                    bgColor: const Color(0XFF1F2123),
-                    textColor: Colors.white,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Wallets',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 38,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    'View All',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.4),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Container(
-                clipBehavior: Clip.hardEdge,
-                padding: const EdgeInsets.all(30),
-                decoration: const BoxDecoration(
-                  color: Color(0XFF1F2123),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const Text(
-                          'Euro',
+                          'Hey, Coxe',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        Text(
+                          'Welcome back',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 18,
+                          ),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Text(
-                              '6 428',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'EUR',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.5),
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
-                        )
                       ],
-                    ),
-                    Transform.scale(
-                      scale: 2.5,
-                      child: Transform.translate(
-                        offset: const Offset(-5, 10),
-                        child: const Icon(
-                          Icons.euro_outlined,
-                          color: Colors.white,
-                          size: 88,
-                        ),
-                      ),
                     )
                   ],
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  'Total Balance',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '₩11 134 290',
+                  style: TextStyle(
+                    fontSize: 42,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyButton(
+                      text: 'Transfer',
+                      bgColor: const Color(0XFFF2B33A),
+                      textColor: Colors.black,
+                    ),
+                    MyButton(
+                      text: 'Request',
+                      bgColor: const Color(0XFF1F2123),
+                      textColor: Colors.white,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Wallets',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 38,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'View All',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.4),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                CurrencyCard(
+                  text: 'Euro',
+                  money: '6 428',
+                  currency: 'EUR',
+                  bgColor: const Color(0XFF1F2123),
+                  mainColor: Colors.white,
+                  icon: Icons.euro_outlined,
+                  offset: const Offset(0, 0),
+                ),
+                CurrencyCard(
+                  text: 'Bitcoin',
+                  money: '9 785',
+                  currency: 'BTC',
+                  bgColor: Colors.white,
+                  mainColor: const Color(0XFF1F2123),
+                  icon: Icons.currency_bitcoin_outlined,
+                  offset: const Offset(0, -40),
+                ),
+                CurrencyCard(
+                  text: 'Euro',
+                  money: '6 428',
+                  currency: 'EUR',
+                  bgColor: const Color(0XFF1F2123),
+                  mainColor: Colors.white,
+                  icon: Icons.attach_money_rounded,
+                  offset: const Offset(0, -80),
+                )
+              ],
+            ),
           ),
         ),
       ),
