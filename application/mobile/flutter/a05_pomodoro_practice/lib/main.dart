@@ -11,6 +11,18 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.orange,
+        cardColor: Color(0XFFFFC22B),
+        iconTheme: IconThemeData(
+          color: Color(0XFFECE4DA),
+        ),
+        textTheme: TextTheme(
+          headlineSmall: TextStyle(
+            color: Color(0XFF96330F),
+          ),
+        ),
+      ),
       home: HomeScreen(),
     );
   }
