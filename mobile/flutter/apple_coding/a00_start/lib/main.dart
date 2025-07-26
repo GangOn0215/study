@@ -11,10 +11,14 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(), // header
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [StarIconBadge()],
+        // header
+        appBar: AppBar(
+          title: const Text('Start App', style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.blue.shade400,
+        ), // header
+        body: Container(
+          alignment: Alignment.center,
+          child: StarIconBadge(),
         ), // body
         bottomNavigationBar: BottomAppBar(
           child: Row(
