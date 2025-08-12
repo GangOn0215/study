@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>반투명 캘린더 + 날씨 모달</title>
+  <style>
+    :root{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.18);
+      --text: #e9eef9;
+      --muted: #b7c0d6;
+      --accent: #8ab4ff;
+      --accent-2: #a5f3fc;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, "Apple SD Gothic Neo", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #15223a 0%, var(--bg) 60%),
+                  radial-gradient(1000px 700px at 80% 90%, #1a1f33 0%, #0b0f1a 60%);
+    }
+
+    .container {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+    }
+
+    .calendar {
+      width: min(860px, 92vw);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: pop 400ms ease;
+    }
+
+    @keyframes pop { from { transform: translateY(8px) scale(.98); opacity: 0 } to { transform: none; opacity: 1 } }
+
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+    }
+
+    .title {
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .title .month { font-size: clamp(20px, 3vw, 28px); font-weight: 700; letter-spacing: .3px; }
+    .title .year { font-size: 14px; color: var(--muted); }
+
+    .nav {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+      user-select: none;
+    }
+    .btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); }
+    .btn:active { transform: translateY(1px); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      padding: 16px;
+    }
+
+    .dow { text-align:center; color: var(--muted); font-size: 12px; letter-spacing:.4px; padding: 4px 0 6px }
+
+    .day {
+      aspect-ratio: 1 / 1;
+      position: relative;
+      border: 1px solid transparent;
+      border-radius: 16px;
+      background: var(--card);
+      display: grid; place-items: center;
+      cursor: pointer;
+      transition: border-color .2s ease, transform .12s ease, background .2s ease;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .day:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); background: rgba(255,255,255,0.12); }
+    .day .num { font-size: 16px; }
+    .day.other-month { opacity: .35; filter: saturate(.7); }
+    .day.today { outline: 2px solid transparent; }
+    .day.today::after{
+      content: "오늘";
+      position: absolute; top: 10px; right: 10px; font-size: 10px;
+      color: #0b1220; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      padding: 3px 6px; border-radius: 999px; font-weight: 700; letter-spacing: .2px;
+    }
+    .day .dot { position: absolute; bottom: 10px; width: 6px; height: 6px; border-radius: 999px; background: var(--accent); opacity:.8 }
+
+    .legend { display:flex; gap:14px; align-items:center; padding: 0 16px 18px 16px; color: var(--muted); font-size: 12px; }
+
+    /* Modal */
+    .modal-backdrop{
+      position: fixed; inset: 0; display: none; place-items: center; padding: 20px;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 50;
+      animation: fade .2s ease;
+    }
+    .modal-backdrop.show{ display: grid; }
+    @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+
+    .modal{
+      width: min(520px, 92vw);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform: translateY(8px);
+      animation: slideUp .25s ease forwards;
+    }
+    @keyframes slideUp { to { transform: translateY(0) } }
+
+    .modal-header{
+      display:flex; align-items:center; justify-content:space-between; gap: 10px;
+      padding: 16px 18px; border-bottom: 1px solid var(--border);
+    }
+    .modal-title { font-weight: 700; letter-spacing:.2px; }
+    .close { cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.08); border-radius: 12px; padding: 8px 12px; }
+
+    .modal-body{
+      padding: 18px;
+      display: grid; gap: 16px;
+    }
+    .weather-card{
+      display:grid; grid-template-columns: 84px 1fr; gap: 16px; align-items:center;
+      padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,0.08);
+    }
+    .wx-icon { font-size: 42px; line-height: 1; text-align:center; }
+    .wx-line { color: var(--muted); font-size: 14px; }
+    .wx-temps { font-weight: 700; font-size: 18px; }
+
+    .location { color: var(--muted); font-size: 13px; }
+
+    .modal-footer{ display:flex; justify-content:flex-end; padding: 0 18px 18px; }
+
+    .pill {
+      display:inline-flex; align-items:center; gap:8px; padding: 6px 10px;
+      border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,0.08);
+      font-size: 12px; color: var(--muted);
+    }
+
+    /* small screens */
+    @media (max-width: 520px){
+      .day { border-radius: 12px; }
+      .wx-temps { font-size: 16px; }
+      .wx-icon { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="calendar" id="calendar">
+      <div class="cal-header">
+        <div class="title">
+          <div class="month" id="monthLabel">월</div>
+          <div class="year" id="yearLabel">연도</div>
+        </div>
+        <div class="nav">
+          <button class="btn" id="prevBtn" aria-label="이전 달">◀︎</button>
+          <button class="btn" id="todayBtn">오늘</button>
+          <button class="btn" id="nextBtn" aria-label="다음 달">▶︎</button>
+        </div>
+      </div>
+
+      <div class="grid" id="dowRow"></div>
+      <div class="grid" id="daysGrid"></div>
+      <div class="legend">
+        <span class="pill"><span class="dot" style="position:static"></span> 일정 있음</span>
+        <span class="pill">클릭하면 날씨 확인</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">날짜</div>
+        <button class="close" id="closeModal">닫기</button>
+      </div>
+      <div class="modal-body">
+        <div class="weather-card">
+          <div class="wx-icon" id="wxIcon">☁️</div>
+          <div>
+            <div class="wx-line" id="wxText">날씨 정보를 불러오는 중...</div>
+            <div class="wx-temps" id="wxTemps">--° / --°</div>
+            <div class="location" id="wxLoc">위치 확인 중...</div>
+          </div>
+        </div>
+        <div class="pill" id="wxExtra">강수량: -- mm</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="okBtn">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Calendar Logic =====
+    const state = {
+      current: new Date(),
+      focus: (()=>{ const d=new Date(); d.setDate(1); return d; })(),
+      events: new Set() // demo dots
+    };
+
+    // demo: random event dots for the month
+    function seedEvents(year, month){
+      state.events.clear();
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+      for(let i=0;i<Math.min(6, daysInMonth);i++){
+        const day = Math.floor(Math.random()*daysInMonth)+1;
+        state.events.add(`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+      }
+    }
+
+    const monthLabel = document.getElementById('monthLabel');
+    const yearLabel  = document.getElementById('yearLabel');
+    const dowRow     = document.getElementById('dowRow');
+    const daysGrid   = document.getElementById('daysGrid');
+
+    const fmtMonth = new Intl.DateTimeFormat('ko-KR', { month: 'long' });
+    const fmtYear  = new Intl.DateTimeFormat('ko-KR', { year: 'numeric' });
+
+    const DOW = ['일','월','화','수','목','금','토'];
+    function renderDOW(){
+      dowRow.innerHTML = '';
+      DOW.forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'dow';
+        el.textContent = d;
+        dowRow.appendChild(el);
+      });
+    }
+
+    function ymd(date){
+      return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`
+    }
+
+    function generateCalendar(date){
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      seedEvents(year, month);
+
+      monthLabel.textContent = fmtMonth.format(date);
+      yearLabel.textContent  = fmtYear.format(date);
+
+      daysGrid.innerHTML = '';
+
+      // leading blanks (start offset)
+      const firstDay = new Date(year, month, 1);
+      const startOffset = firstDay.getDay();
+
+      // previous month's tail
+      const prevDays = new Date(year, month, 0).getDate();
+      for(let i=0; i<startOffset; i++){
+        const d = document.createElement('div');
+        d.className = 'day other-month';
+        d.innerHTML = `<span class="num">${prevDays - startOffset + i + 1}</span>`;
+        daysGrid.appendChild(d);
+      }
+
+      // current month days
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+      for(let day=1; day<=daysInMonth; day++){
+        const d = document.createElement('button');
+        d.className = 'day';
+        d.setAttribute('type','button');
+        d.dataset.date = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        d.innerHTML = `<span class="num">${day}</span>`;
+
+        // today marker
+        const today = ymd(state.current);
+        if(d.dataset.date === today){ d.classList.add('today'); }
+
+        // dot if event exists
+        if(state.events.has(d.dataset.date)){
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          d.appendChild(dot);
+        }
+
+        d.addEventListener('click', () => openWeatherModal(new Date(year, month, day)));
+        daysGrid.appendChild(d);
+      }
+
+      // trailing blanks to complete grid rows
+      const cells = daysGrid.children.length;
+      const remainder = cells % 7;
+      if(remainder !== 0){
+        const toFill = 7 - remainder;
+        for(let i=1;i<=toFill;i++){
+          const d = document.createElement('div');
+          d.className = 'day other-month';
+          d.innerHTML = `<span class="num">${i}</span>`;
+          daysGrid.appendChild(d);
+        }
+      }
+    }
+
+    // Nav handlers
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      state.focus.setMonth(state.focus.getMonth() - 1);
+      generateCalendar(state.focus);
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      state.focus.setMonth(state.focus.getMonth() + 1);
+      generateCalendar(state.focus);
+    });
+    document.getElementById('todayBtn').addEventListener('click', () => {
+      state.focus = new Date(); state.focus.setDate(1);
+      generateCalendar(state.focus);
+    });
+
+    renderDOW();
+    generateCalendar(state.focus);
+
+    // ===== Weather Modal =====
+    const modal   = document.getElementById('modalBackdrop');
+    const closeBtn= document.getElementById('closeModal');
+    const okBtn   = document.getElementById('okBtn');
+    const modalTitle = document.getElementById('modalTitle');
+
+    const wxIcon  = document.getElementById('wxIcon');
+    const wxText  = document.getElementById('wxText');
+    const wxTemps = document.getElementById('wxTemps');
+    const wxLoc   = document.getElementById('wxLoc');
+    const wxExtra = document.getElementById('wxExtra');
+
+    let userCoords = { lat: 37.5665, lon: 126.9780, label: '서울(기본값)' };
+
+    // map Open-Meteo weather codes to emoji/text
+    const WX = {
+      0:  { e:'☀️', t:'맑음' },
+      1:  { e:'🌤️', t:'대체로 맑음' },
+      2:  { e:'⛅', t:'부분적으로 흐림' },
+      3:  { e:'☁️', t:'흐림' },
+      45: { e:'🌫️', t:'안개' },
+      48: { e:'🌫️', t:'착빙성 안개' },
+      51: { e:'🌦️', t:'이슬비 약함' },
+      53: { e:'🌦️', t:'이슬비 보통' },
+      55: { e:'🌧️', t:'이슬비 강함' },
+      56: { e:'🌦️', t:'어는 이슬비 약함' },
+      57: { e:'🌧️', t:'어는 이슬비 강함' },
+      61: { e:'🌦️', t:'비 약함' },
+      63: { e:'🌧️', t:'비 보통' },
+      65: { e:'🌧️', t:'비 강함' },
+      66: { e:'🌧️', t:'어는 비 약함' },
+      67: { e:'🌧️', t:'어는 비 강함' },
+      71: { e:'🌨️', t:'눈 약함' },
+      73: { e:'🌨️', t:'눈 보통' },
+      75: { e:'❄️', t:'눈 강함' },
+      77: { e:'❄️', t:'싸락눈' },
+      80: { e:'🌦️', t:'소나기 약함' },
+      81: { e:'🌧️', t:'소나기 보통' },
+      82: { e:'⛈️', t:'소나기 강함' },
+      85: { e:'🌨️', t:'소나기 눈 약함' },
+      86: { e:'❄️', t:'소나기 눈 강함' },
+      95: { e:'⛈️', t:'천둥번개' },
+      96: { e:'⛈️', t:'천둥 + 우박 약함' },
+      99: { e:'⛈️', t:'천둥 + 우박 강함' }
+    };
+
+    function openModal(){ modal.classList.add('show'); modal.setAttribute('aria-hidden', 'false'); }
+    function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden', 'true'); }
+    closeBtn.addEventListener('click', closeModal);
+    okBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
+
+    async function ensureLocation(){
+      return new Promise((resolve) => {
+        if(!navigator.geolocation){ return resolve(userCoords); }
+        navigator.geolocation.getCurrentPosition(
+          (pos)=>{
+            const { latitude, longitude } = pos.coords;
+            userCoords = { lat: latitude, lon: longitude, label: '내 위치' };
+            resolve(userCoords);
+          },
+          ()=> resolve(userCoords),
+          { enableHighAccuracy: false, timeout: 5000, maximumAge: 60_000 }
+        );
+      });
+    }
+
+    async function fetchWeatherForDate(date){
+      await ensureLocation();
+      const y = date.getFullYear();
+      const m = String(date.getMonth()+1).padStart(2,'0');
+      const d = String(date.getDate()).padStart(2,'0');
+      const dayStr = `${y}-${m}-${d}`;
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${userCoords.lat}&longitude=${userCoords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&start_date=${dayStr}&end_date=${dayStr}`;
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('날씨 API 호출 실패');
+      const json = await res.json();
+
+      const ix = 0; // one day range
+      const wcode = json.daily.weathercode[ix];
+      const maxT  = Math.round(json.daily.temperature_2m_max[ix]);
+      const minT  = Math.round(json.daily.temperature_2m_min[ix]);
+      const prcp  = (json.daily.precipitation_sum[ix] ?? 0).toFixed(1);
+      return { code: wcode, max: maxT, min: minT, prcp };
+    }
+
+    function formatKoreanDate(date){
+      return new Intl.DateTimeFormat('ko-KR', { dateStyle: 'full' }).format(date);
+    }
+
+    async function openWeatherModal(date){
+      modalTitle.textContent = formatKoreanDate(date);
+      wxIcon.textContent = '⌛';
+      wxText.textContent = '날씨 정보를 불러오는 중...';
+      wxTemps.textContent = '--° / --°';
+      wxLoc.textContent = '위치 확인 중...';
+      wxExtra.textContent = '강수량: -- mm';
+      openModal();
+
+      try {
+        const w = await fetchWeatherForDate(date);
+        const meta = WX[w.code] || { e:'🌡️', t:`코드 ${w.code}` };
+        wxIcon.textContent = meta.e;
+        wxText.textContent = meta.t;
+        wxTemps.textContent = `${w.max}° / ${w.min}°`;
+        wxLoc.textContent = `${userCoords.label} · 위도 ${userCoords.lat.toFixed(2)}, 경도 ${userCoords.lon.toFixed(2)}`;
+        wxExtra.textContent = `강수량: ${w.prcp} mm`;
+      } catch (err){
+        console.error(err);
+        wxIcon.textContent = '⚠️';
+        wxText.textContent = '날씨 정보를 불러오지 못했어요.';
+        wxTemps.textContent = '';
+        wxLoc.textContent = '네트워크 또는 권한 문제일 수 있어요.';
+        wxExtra.textContent = '';
+      }
+    }
+  </script>
+</body>
+</html>
