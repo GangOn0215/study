@@ -24,26 +24,11 @@ class MainApp extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Hey, Jun',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        'Welcome Back',
-                        style: TextStyle(
-                          // color: Colors.white.withOpacity(0.8)  <<<  deprecated 되었습니다.
-                          color: Colors.white.withValues(alpha: 0.8),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
+                  Greeting(
+                    name: 'Jun',
+                    subText: 'Welcome Back',
+                    alpha: 0.8,
+                    alignRight: true,
                   ),
                 ],
               ),
@@ -51,6 +36,49 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Greeting extends StatelessWidget {
+  const Greeting({
+    super.key,
+    required this.name,
+    required this.subText,
+    required this.alpha,
+    required this.alignRight,
+  });
+
+  final String name;
+  final String subText;
+  final double alpha;
+  final bool alignRight;
+
+  @override
+  Widget build(BuildContext context) {
+    final align = alignRight
+        ? CrossAxisAlignment.end
+        : CrossAxisAlignment.start;
+
+    return Column(
+      crossAxisAlignment: align,
+      children: [
+        Text(
+          'Hey, $name',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        Text(
+          subText,
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: alpha),
+            fontSize: 18,
+          ),
+        ),
+      ],
     );
   }
 }
