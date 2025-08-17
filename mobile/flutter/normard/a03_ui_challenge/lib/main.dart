@@ -61,44 +61,15 @@ class MainApp extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 40,
-                      ),
-                      child: Text(
-                        'Transfer',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                  Button(
+                    text: 'Transfer',
+                    mainColor: Colors.amber,
+                    fontColor: Colors.black,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 40,
-                      ),
-                      child: Text(
-                        'Request',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                  Button(
+                    text: 'Request',
+                    mainColor: Color(0xFF1F2123),
+                    fontColor: Colors.white,
                   ),
                 ],
               ),
@@ -106,49 +77,6 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Greeting extends StatelessWidget {
-  const Greeting({
-    super.key,
-    required this.name,
-    required this.subText,
-    required this.alpha,
-    required this.alignRight,
-  });
-
-  final String name;
-  final String subText;
-  final double alpha;
-  final bool alignRight;
-
-  @override
-  Widget build(BuildContext context) {
-    final align = alignRight
-        ? CrossAxisAlignment.end
-        : CrossAxisAlignment.start;
-
-    return Column(
-      crossAxisAlignment: align,
-      children: [
-        Text(
-          'Hey, $name',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 28,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        Text(
-          subText,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: alpha),
-            fontSize: 18,
-          ),
-        ),
-      ],
     );
   }
 }
