@@ -1,3 +1,4 @@
+import 'package:a03_ui_challenge/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,11 +25,26 @@ class MainApp extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Greeting(
-                    name: 'Jun',
-                    subText: 'Welcome Back',
-                    alpha: 0.8,
-                    alignRight: true,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Hey, Small Cookie!',
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        'Welcome Back',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white.withValues(alpha: 0.8),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
