@@ -32,6 +32,31 @@ class MainApp extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 120),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Total Balance',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white.withValues(alpha: 0.5),
+                        ),
+                      ),
+                      Text(
+                        '\$ 5 194 482',
+                        style: TextStyle(
+                          fontSize: 48,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
