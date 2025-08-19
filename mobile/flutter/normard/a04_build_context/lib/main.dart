@@ -4,16 +4,60 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      // ThemeData 설정
+      theme: ThemeData(
+        // textTheme를 설정
+        textTheme: TextTheme(
+          // bodyLarge를 설정
+          bodyLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.red,
+          ),
         ),
+      ),
+      home: Scaffold(
+        backgroundColor: Color(0XFFF4EDDB),
+        body: Center(child: MyLargeTitle()),
+      ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatefulWidget {
+  const MyLargeTitle({super.key});
+
+  @override
+  State<MyLargeTitle> createState() => _MyLargeTitleState();
+}
+
+class _MyLargeTitleState extends State<MyLargeTitle> {
+  @override
+  Widget build(BuildContext context) {
+    print('build');
+    return Text(
+      'My Large Title',
+      style: TextStyle(
+        /**
+         *  상위 Material Design의 텍스트 스타일을 사용 
+         *  
+         *  bodyLarge?.color, 에서
+         *  ?. 이 붙었다는 것은 maybe
+         *  ?! 이 붙었다는 것은 무조건
+         */
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+        fontSize: 24,
       ),
     );
   }
