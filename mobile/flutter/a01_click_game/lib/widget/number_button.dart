@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-class NumberButton extends StatelessWidget {
+class NumberButton extends StatefulWidget {
   int number = 0;
 
   NumberButton({super.key, required this.number});
 
+  @override
+  State<NumberButton> createState() => _NumberButtonState();
+}
+
+class _NumberButtonState extends State<NumberButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,10 +27,10 @@ class NumberButton extends StatelessWidget {
           padding: EdgeInsets.zero, // 내부 패딩
         ),
         onPressed: () {
-          debugPrint("Button $number clicked");
+          debugPrint("Button ${widget.number} clicked");
         },
         child: Text(
-          '$number',
+          '${widget.number}',
           style: const TextStyle(color: Colors.white, fontSize: 24),
         ),
       ),
