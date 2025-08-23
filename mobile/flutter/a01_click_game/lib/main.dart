@@ -17,26 +17,18 @@ class _MainAppState extends State<MainApp> {
   int _tabIndex = 0;
 
   // 1~9 섞어서 중복 없이 배치
-  late final List<int> numbers = List.generate(9, (i) => i + 1)
-    ..shuffle(Random());
+  late List<int> numbers = List.generate(9, (i) => i + 1)..shuffle(Random());
 
   int _secsLeft = 5; // 남은 초 (전체 버튼 공유)
   Timer? _tickTimer;
   int score = 0;
+  int tapCount = 0; // 클릭 횟수 저장용 변수
+  bool isGameStart = false; // 게임 시작 여부
 
   @override
   void initState() {
     super.initState();
-    _tickTimer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (!mounted) return;
-      setState(() {
-        _secsLeft--;
-        if (_secsLeft <= 0) {
-          _secsLeft = 0;
-          t.cancel();
-        }
-      });
-    });
+    var fToast = FToast();
   }
 
   @override
@@ -45,11 +37,17 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
-  void _startTimer() {
+  void dataInit() {
     setState(() {
+      numbers = List.generate(9, (i) => i + 1)..shuffle(Random());
+      score = 0;
       _secsLeft = 5;
       _tickTimer?.cancel();
     });
+  }
+
+  void _startTimer() {
+    dataInit();
 
     // 새로운 타이머 시작
     _tickTimer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -59,77 +57,142 @@ class _MainAppState extends State<MainApp> {
         if (_secsLeft <= 0) {
           _secsLeft = 0;
           t.cancel();
+          tapCount = 0;
         }
       });
     });
   }
 
+  void _gameStart() {
+    setState(() {
+      isGameStart = true;
+    });
+
+    _startTimer();
+  }
+
+  void _gameEnd() {
+    dataInit();
+    setState(() {
+      isGameStart = false;
+      _tickTimer?.cancel();
+    });
+  }
+
   // 클릭된 숫자들 (상단에 보여줄 용도)
   final List<int> clickedValues = [];
+  final List<int> answerList = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   // ---- 탭별 화면들
   Widget _buildHomeGame() {
+    // 1. 시작 버튼이 있는 메인 화면이 나와야함
+
+    // 2. 시작하면 시작 카운트 다운(5초) 이 돌아가야함
+
+    // 3. 5초가 지나면 숫자판이 돌아가고 모든 숫자가 ? 로 변함
+
+    // 4. 1 ~ 9까지 순서를 외웠고, 순서를 맞추면 점수가 올라가고, 점수가 틀리면
+    //    GAME OVER 이라고 toast 메시지 창이 나옴
+    //
+
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // 상단: 남은 시간 / 점수
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Column(
+      child: !isGameStart
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _secsLeft != 0
-                    ? Text(
-                        '남은 시간: $_secsLeft 초',
-                        style: const TextStyle(fontSize: 20),
-                      )
-                    : Text(
-                        '점수: $score',
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.all(24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      // side: const BorderSide(color: Colors.white, width: 2),
+                    ),
+                  ),
+                  onPressed: _gameStart,
+                  child: Text(
+                    '게임 시작',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 상단: 남은 시간 / 점수
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Column(
+                    children: [
+                      _secsLeft != 0
+                          ? Text(
+                              '남은 시간: $_secsLeft 초',
+                              style: const TextStyle(fontSize: 20),
+                            )
+                          : Text(
+                              '점수: $score',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+                // 3x3 버튼
+                for (int i = 0; i < 3; i++)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(3, (j) {
+                      // 숫자판 위치
+                      final slot = (i * 3) + j + 1;
+                      // 숫자
+                      final value = numbers[slot - 1];
+                      return Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: NumberButton(
+                          number: value,
+                          slot: slot,
+                          secsLeft: _secsLeft, // 타이머 상태 전달
+                          onTap: (s, v) {
+                            setState(() {
+                              clickedValues.add(v);
+                              tapCount++; // 클릭할 때마다 증가
+                            });
+
+                            if (_secsLeft == 0 && v == tapCount) {
+                              score++; // 샘플: 시간 끝난 뒤 뒤집으면 +1
+                            } else {
+                              // GAME OVER
+                              _gameEnd();
+                              // --> 시작 화면
+                            }
+                          },
                         ),
-                      ),
+                      );
+                    }),
+                  ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      clickedValues.clear();
+                      numbers.shuffle(Random());
+                      score = 0;
+                      _startTimer(); // 라운드 리셋
+                    });
+                  },
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('다시 시작'),
+                ),
               ],
             ),
-          ),
-          // 3x3 버튼
-          for (int i = 0; i < 3; i++)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(3, (j) {
-                final slot = (i * 3) + j + 1;
-                final value = numbers[slot - 1];
-                return Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: NumberButton(
-                    number: value,
-                    slot: slot,
-                    secsLeft: _secsLeft, // 타이머 상태 전달
-                    onTap: (s, v) {
-                      setState(() => clickedValues.add(v));
-                      // 예: 맞춘 점수 로직
-                      if (_secsLeft == 0) score++; // 샘플: 시간 끝난 뒤 뒤집으면 +1
-                    },
-                  ),
-                );
-              }),
-            ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              setState(() {
-                clickedValues.clear();
-                numbers.shuffle(Random());
-                score = 0;
-                _startTimer(); // 라운드 리셋
-              });
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('다시 시작'),
-          ),
-        ],
-      ),
     );
   }
 
