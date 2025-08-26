@@ -1,21 +1,14 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:a01_click_game/widget/bottom_navigation_bar_screen.dart';
 import 'package:a01_click_game/widget/number_button.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MainApp());
-
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+class GameScreens extends StatefulWidget {
   @override
-  State<MainApp> createState() => _MainAppState();
+  State<GameScreens> createState() => _GameScreensState();
 }
 
-class _MainAppState extends State<MainApp> {
-  // -- 탭 인덱스 ( 하단 바 & 본문 교체)
-  int _tabIndex = 0;
-
+class _GameScreensState extends State<GameScreens> {
   // 1~9 섞어서 중복 없이 배치
   late List<int> numbers = List.generate(9, (i) => i + 1)..shuffle(Random());
 
@@ -82,18 +75,8 @@ class _MainAppState extends State<MainApp> {
   final List<int> clickedValues = [];
   final List<int> answerList = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  // ---- 탭별 화면들
-  Widget _buildHomeGame() {
-    // 1. 시작 버튼이 있는 메인 화면이 나와야함
-
-    // 2. 시작하면 시작 카운트 다운(5초) 이 돌아가야함
-
-    // 3. 5초가 지나면 숫자판이 돌아가고 모든 숫자가 ? 로 변함
-
-    // 4. 1 ~ 9까지 순서를 외웠고, 순서를 맞추면 점수가 올라가고, 점수가 틀리면
-    //    GAME OVER 이라고 toast 메시지 창이 나옴
-    //
-
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: !isGameStart
           ? Column(
@@ -192,43 +175,6 @@ class _MainAppState extends State<MainApp> {
                 ),
               ],
             ),
-    );
-  }
-
-  Widget _buildAlarmPage() {
-    return const Center(child: Text('알림 탭 (예시 페이지)'));
-  }
-
-  Widget _buildFriendsPage() {
-    return const Center(child: Text('친구 탭 (예시 페이지)'));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xFFFAEEF6),
-        appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
-          title: const Text(
-            'Click GAME',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          centerTitle: true,
-        ),
-        body: IndexedStack(
-          index: _tabIndex,
-          children: [
-            _buildHomeGame(), // 탭 0: 게임
-            _buildAlarmPage(), // 탭 1: 알림
-            _buildFriendsPage(), // 탭 2: 친구
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBarScreen(
-          currentIndex: _tabIndex,
-          onTap: (i) => setState(() => _tabIndex = i),
-        ),
-      ),
     );
   }
 }
