@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:math';
 import 'package:a01_click_game/widget/number_button.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class GameScreens extends StatefulWidget {
+  const GameScreens({super.key});
+
   @override
   State<GameScreens> createState() => _GameScreensState();
 }
@@ -63,11 +66,35 @@ class _GameScreensState extends State<GameScreens> {
     _startTimer();
   }
 
-  void _gameEnd() {
+  void _gameOver() {
     dataInit();
     setState(() {
       isGameStart = false;
       _tickTimer?.cancel();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating, // 공중에 뜨게
+          margin: const EdgeInsets.all(16), // 화면 여백
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: Colors.redAccent,
+          duration: const Duration(seconds: 4),
+          content: Row(
+            children: const [
+              Icon(Icons.error_outline, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  "게임 오버!",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     });
   }
 
@@ -152,7 +179,7 @@ class _GameScreensState extends State<GameScreens> {
                               score++; // 샘플: 시간 끝난 뒤 뒤집으면 +1
                             } else {
                               // GAME OVER
-                              _gameEnd();
+                              _gameOver();
                               // --> 시작 화면
                             }
                           },
