@@ -1,3 +1,4 @@
+import 'package:a05_pomodoro_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,12 +10,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Color(0XFFE7626C),
+        textTheme: TextTheme(displayLarge: TextStyle(color: Color(0xFF232B55))),
+        cardColor: const Color(0XFFF4EDDB),
       ),
+      home: HomeScreen(),
     );
   }
 }
