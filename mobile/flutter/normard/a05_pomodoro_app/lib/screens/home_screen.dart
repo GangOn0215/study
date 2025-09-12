@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
 import 'dart:async';
 
-=======
->>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,7 +9,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-<<<<<<< Updated upstream
 String format(int seconds) {
   int min = (seconds / 60).toInt();
   int sec = (seconds % 60).toInt();
@@ -160,11 +156,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-=======
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
->>>>>>> Stashed changes
   }
 }
