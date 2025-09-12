@@ -6,7 +6,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(automaticallyImplyLeading: false, title: Text('냥이월드 🐱')),
+      appBar: AppBar(automaticallyImplyLeading: false,
+      title: Text('냥이월드 🐱')),
       body: Center(
         child: Text(
           'Welcome to Meow World 🐾',

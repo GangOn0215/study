@@ -92,6 +92,10 @@ class MainApp extends StatelessWidget {
 
       // 전역으로 적용할 테마
       theme: ThemeData(
+        
+        // 폰트
+        fontFamily: "Jua",
+
         // 전체 배경화면
         scaffoldBackgroundColor: Color(0xFFFFF8E7),
 
@@ -102,6 +106,7 @@ class MainApp extends StatelessWidget {
           elevation: 2,
           centerTitle: true,
           titleTextStyle: TextStyle(
+            fontFamily: "Jua",
             color: Color(0xFF2C2C2C),
             fontSize: 20,
             fontWeight: FontWeight.bold,
