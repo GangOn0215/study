@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // 2초 후 Home 으로 이동
     Timer(const Duration(seconds: 2), () {
       if (mounted) {
-        context.pushReplacement('/'); // ⭕ 트랜지션 정상 작동
+        context.push('/');
       }
     });
   }
