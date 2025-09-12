@@ -12,9 +12,17 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+<<<<<<< Updated upstream
         scaffoldBackgroundColor: Color(0XFFE7626C),
         textTheme: TextTheme(displayLarge: TextStyle(color: Color(0xFF232B55))),
         cardColor: const Color(0XFFF4EDDB),
+=======
+        colorScheme: ColorScheme.fromSwatch(backgroundColor: Color(0XFFE7626C)),
+        textTheme: TextTheme(
+          headlineLarge: TextStyle(color: Color(0xFF232B55)),
+        ),
+        cardColor: Color(0XFFF4EDDB),
+>>>>>>> Stashed changes
       ),
       home: HomeScreen(),
     );
