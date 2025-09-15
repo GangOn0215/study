@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/common/footer_navigation.dart';
+import 'package:freedom_timer/widgets/work_banner.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
@@ -14,13 +15,17 @@ class _TimerScreenState extends State<TimerScreen> {
   late DateTime now;
   late int currentTimeStamp;
   late DateTime targetTime;
-  late int targetTimeStamp;
+  late int workEndTimeStamp;
   late int remainingSeconds;
   late int hours;
   late int minutes;
   late int seconds;
   late String timeString;
   late Color timerColor = const Color(0xFF2C2C2C); // 초기 색상: 진한 차콜
+
+  late int workStartTimeStamp;
+  late DateTime workStartTime;
+  late DateTime workEndTime;
 
   late Timer timer;
 
@@ -31,36 +36,53 @@ class _TimerScreenState extends State<TimerScreen> {
     now = DateTime.now();
     currentTimeStamp = now.millisecondsSinceEpoch ~/ 1000;
 
-    targetTime = DateTime(now.year, now.month, now.day, 18, 0, 0);
-    targetTimeStamp = targetTime.millisecondsSinceEpoch ~/ 1000;
+    print(now);
 
-    // 남은 시간 계산 (초 단위)
-    remainingSeconds = targetTimeStamp - currentTimeStamp;
+    workStartTime = DateTime(now.year, now.month, now.day, 9, 0, 0);
+    workEndTime = DateTime(now.year, now.month, now.day, 18, 0, 0);
 
-    // 시분초로 변환
-    hours = remainingSeconds ~/ 3600;
-    minutes = (remainingSeconds % 3600) ~/ 60;
-    seconds = remainingSeconds % 60;
+    print(workStartTime);
+    print(now.millisecond >= workStartTime.millisecond);
+    print(now.millisecond <= workEndTime.millisecond);
 
-    timeString = '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-    timerColor = getTimerColor(remainingSeconds); 
+    workStartTimeStamp = workStartTime.millisecondsSinceEpoch ~/ 1000;
+    workEndTimeStamp = workEndTime.millisecondsSinceEpoch ~/ 1000;
 
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        if (remainingSeconds > 0) {
-          remainingSeconds--;
+    if (now.isAfter(workStartTime) && now.isBefore(workEndTime)) {
+      print('근무 시간.');
 
-          hours = remainingSeconds ~/ 3600;
-          minutes = (remainingSeconds % 3600) ~/ 60;
-          seconds = remainingSeconds % 60;
+      // 남은 시간 계산 (초 단위)
+      remainingSeconds = workEndTimeStamp - currentTimeStamp;
 
-          timeString = '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-          timerColor = getTimerColor(remainingSeconds);
-        } else {
-          timer.cancel();
-        }
+      // 시분초로 변환
+      hours = remainingSeconds ~/ 3600;
+      minutes = (remainingSeconds % 3600) ~/ 60;
+      seconds = remainingSeconds % 60;
+
+      timeString =
+          '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+      timerColor = getTimerColor(remainingSeconds);
+
+      timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        setState(() {
+          if (remainingSeconds > 0) {
+            remainingSeconds--;
+
+            hours = remainingSeconds ~/ 3600;
+            minutes = (remainingSeconds % 3600) ~/ 60;
+            seconds = remainingSeconds % 60;
+
+            timeString =
+                '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+            timerColor = getTimerColor(remainingSeconds);
+          } else {
+            timer.cancel();
+          }
+        });
       });
-    });
+    } else {
+      timeString = '근무 시간이 아닙니다.';
+    }
   }
 
   @override
@@ -73,14 +95,14 @@ class _TimerScreenState extends State<TimerScreen> {
   Color getTimerColor(int remainingSeconds) {
     // 색상 구간 정의
     const threeHours = 10800; // 3시간
-    const twoHours = 7200;   // 2시간
-    const oneHour  = 3600;   // 1시간
-    const tenMins  = 600;    // 10분
+    const twoHours = 7200; // 2시간
+    const oneHour = 3600; // 1시간
+    const tenMins = 600; // 10분
 
-    const blue   = Color(0xFF64B5F6); // 3h: 파스텔 블루
-    const mint   = Color(0xFF81C784); // 2h: 파스텔 민트
+    const blue = Color(0xFF64B5F6); // 3h: 파스텔 블루
+    const mint = Color(0xFF81C784); // 2h: 파스텔 민트
     const yellow = Color(0xFFFFD54F); // 1h: 파스텔 옐로우
-    const pink   = Color(0xFFF48FB1); // 10m: 파스텔 핑크
+    const pink = Color(0xFFF48FB1); // 10m: 파스텔 핑크
 
     if (remainingSeconds > threeHours) {
       return const Color(0xFF2C2C2C); // 기본 차콜
@@ -104,19 +126,7 @@ class _TimerScreenState extends State<TimerScreen> {
       appBar: AppBar(title: Text('퇴근냥이 🐱')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              timeString,
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: timerColor,
-              ),
-            ),
-          ),
-        ],
+        children: [Container(alignment: Alignment.center, child: WorkBanner())],
       ),
       bottomNavigationBar: FooterNavigation(),
     );

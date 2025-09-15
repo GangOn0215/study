@@ -14,9 +14,10 @@ final _router = GoRouter(
       pageBuilder: (context, state) => CustomTransitionPage(
         child: const SplashScreen(),
         transitionsBuilder: (context, animation, _, child) {
-          final scale = Tween<double>(begin: 0.9, end: 1.0).animate(
-            CurvedAnimation(parent: animation, curve: Curves.easeOut),
-          );
+          final scale = Tween<double>(
+            begin: 0.9,
+            end: 1.0,
+          ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut));
           return FadeTransition(
             opacity: animation,
             child: ScaleTransition(scale: scale, child: child),
@@ -41,13 +42,13 @@ final _router = GoRouter(
           pageBuilder: (context, state) => CustomTransitionPage(
             child: HomeScreen(),
             transitionsBuilder: (context, animation, _, child) {
-              final offset = Tween<Offset>(
-                begin: const Offset(-1.0, 0.0), // 왼쪽에서 살짝
-                end: Offset.zero,
-              ).animate(CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOut,
-              ));
+              final offset =
+                  Tween<Offset>(
+                    begin: const Offset(-1.0, 0.0), // 왼쪽에서 살짝
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                  );
               return SlideTransition(position: offset, child: child);
             },
             transitionDuration: const Duration(milliseconds: 300),
@@ -60,13 +61,13 @@ final _router = GoRouter(
           pageBuilder: (context, state) => CustomTransitionPage(
             child: const TimerScreen(),
             transitionsBuilder: (context, animation, _, child) {
-              final offset = Tween<Offset>(
-                begin: const Offset(1.0, 0.0), // 오른쪽에서 들어옴
-                end: Offset.zero,
-              ).animate(CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOut,
-              ));
+              final offset =
+                  Tween<Offset>(
+                    begin: const Offset(-1.0, 0.0), // 오른쪽에서 들어옴
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                  );
               return SlideTransition(position: offset, child: child);
             },
             transitionDuration: const Duration(milliseconds: 300),
@@ -92,7 +93,6 @@ class MainApp extends StatelessWidget {
 
       // 전역으로 적용할 테마
       theme: ThemeData(
-        
         // 폰트
         fontFamily: "Jua",
 
