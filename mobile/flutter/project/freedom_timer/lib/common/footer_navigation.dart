@@ -1,86 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // 추가 필요
+import 'package:freedom_timer/theme/app_colors.dart';
+import 'package:go_router/go_router.dart';
 
 class FooterNavigation extends StatelessWidget {
   const FooterNavigation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final String currentPath = GoRouterState.of(
-      context,
-    ).uri.toString(); // ✅ 수정된 부분
+    final String currentPath = GoRouterState.of(context).uri.toString();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              final currentPath = GoRouterState.of(context).uri.toString();
-              if (currentPath != '/') {
-                context.push('/'); // 현재 경로가 '/'가 아닐 때만 이동
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: currentPath == '/'
-                  ? const Color(0xFFFFD166) // 활성
-                  : const Color(0xFFF0F0F0), // 비활성
-              foregroundColor: currentPath == '/'
-                  ? const Color(0xFF2C2C2C)
-                  : const Color(0xFF777777),
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.home, size: 20),
-                SizedBox(width: 8),
-                Text(
-                  'Home',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              final currentPath = GoRouterState.of(context).uri.toString();
-              if (currentPath != '/timer') {
-                context.push('/timer'); // 현재 경로가 '/timer'가 아닐 때만 이동
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: currentPath == '/timer'
-                  ? const Color(0xFFFFD166)
-                  : const Color(0xFFF0F0F0),
-              foregroundColor: currentPath == '/timer'
-                  ? const Color(0xFF2C2C2C)
-                  : const Color(0xFF777777),
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.timer, size: 20),
-                SizedBox(width: 8),
-                Text(
-                  'Timer',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          ),
-        ),
+    // 현재 index 계산
+    int currentIndex = 0;
+
+    if (currentPath == '/timer') {
+      currentIndex = 1;
+    }
+
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: (index) {
+        if (index == 0 && currentPath != '/') {
+          context.push('/'); // ✅ context.push 대신 context.go 사용 → 중복 방지
+        } else if (index == 1 && currentPath != '/timer') {
+          context.push('/timer');
+        }
+      },
+      type: BottomNavigationBarType.fixed, // 아이템 2개 이상일 때 권장
+      backgroundColor: AppColors.background,
+      selectedItemColor: const Color(0xFFFFD166), // 노란색
+      unselectedItemColor: Colors.grey[600],
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+      elevation: 10,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Timer'),
       ],
     );
   }
