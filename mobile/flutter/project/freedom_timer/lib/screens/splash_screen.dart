@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:freedom_timer/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // 2초 후 Home 으로 이동
     Timer(const Duration(seconds: 2), () {
       if (mounted) {
-        context.push('/');
+        context.go('/');
       }
     });
   }
@@ -26,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E7), // 파스텔 크림 배경
+      backgroundColor: AppColors.background, // 파스텔 크림 배경
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2C2C2C), // 진한 차콜
+                color: AppColors.text, // 진한 차콜
               ),
               textAlign: TextAlign.center,
             ),

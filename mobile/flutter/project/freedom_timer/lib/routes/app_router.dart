@@ -25,7 +25,8 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       path: AppRoutes.splash,
-      pageBuilder: (context, state) => _getPage(SplashScreen()),
+      builder: (context, state) => SplashScreen(),
+      // pageBuilder: (context, state) => _getPage(SplashScreen()),
     ),
     ShellRoute(
       builder: (context, state, child) {
@@ -37,11 +38,13 @@ final appRouter = GoRouter(
       routes: [
         GoRoute(
           path: AppRoutes.home,
-          pageBuilder: (context, state) => _getPage(HomeScreen()),
+          builder: (context, state) => HomeScreen(),
+          // pageBuilder: (context, state) => _getPage(HomeScreen()),
         ),
         GoRoute(
           path: AppRoutes.timer,
-          pageBuilder: (context, state) => _getPage(TimerScreen()),
+          builder: (context, state) => TimerScreen(),
+          // pageBuilder: (context, state) => _getPage(TimerScreen()),
         ),
       ],
     ),
