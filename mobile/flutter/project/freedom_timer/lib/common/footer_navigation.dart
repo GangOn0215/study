@@ -6,6 +6,7 @@ class FooterNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final paths = ['/', '/timer', '/account']; // 탭에 대응하는 경로들
     final String currentPath = GoRouterState.of(context).uri.toString();
 
     // 현재 경로가 paths 안에서 몇 번째인지 찾는다.
@@ -13,7 +14,6 @@ class FooterNavigation extends StatelessWidget {
 
     // indexOf는 못 찾으면 -1을 반환한다 → 그럴 때를 대비해서 안전하게 0으로 보정
     final currentIndex = index == -1 ? 0 : index;
-    }
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
