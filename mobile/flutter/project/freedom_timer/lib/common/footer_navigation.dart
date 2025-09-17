@@ -8,20 +8,20 @@ class FooterNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final String currentPath = GoRouterState.of(context).uri.toString();
 
-    // 현재 index 계산
-    int currentIndex = 0;
+    // 현재 경로가 paths 안에서 몇 번째인지 찾는다.
+    final index = paths.indexOf(currentPath);
 
-    if (currentPath == '/timer') {
-      currentIndex = 1;
+    // indexOf는 못 찾으면 -1을 반환한다 → 그럴 때를 대비해서 안전하게 0으로 보정
+    final currentIndex = index == -1 ? 0 : index;
     }
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
-        if (index == 0 && currentPath != '/') {
-          context.go('/'); // ✅ context.push 대신 context.go 사용 → 중복 방지
-        } else if (index == 1 && currentPath != '/timer') {
-          context.go('/timer');
+        final targetPath = paths[index];
+
+        if (targetPath != currentPath) {
+          context.go(targetPath);
         }
       },
       type: BottomNavigationBarType.fixed, // 아이템 2개 이상일 때 권장
