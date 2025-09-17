@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/theme/app_colors.dart';
+import 'package:freedom_timer/widgets/home/header_title.dart';
+import 'package:freedom_timer/widgets/home/welcome_message.dart';
 
 /// 메인 화면 입니다!
 class HomeScreen extends StatelessWidget {
@@ -10,15 +12,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(automaticallyImplyLeading: false, title: Text('냥이월드 🐱')),
-      body: Center(
-        child: Text(
-          'Welcome to Meow World 🐾',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.text,
-          ),
-        ),
+      body: Column(
+        children: [
+          HeaderTitle(),
+          Spacer(),
+          WelcomeMessage(),
+          SizedBox(height: 20),
+        ],
       ),
     );
   }
