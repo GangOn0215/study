@@ -113,3 +113,12 @@ lib/generated_plugin_registrant.dart
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/dart,flutter,visualstudiocode
+mobile/flutter/project/freedom_timer/windows/flutter/
+
+mobile/flutter/project/freedom_timer/macos/Flutter/GeneratedPluginRegistrant.swift
+
+mobile/flutter/project/freedom_timer/linux/flutter/generated_plugin_registrant.h
+
+mobile/flutter/project/freedom_timer/linux/flutter/generated_plugin_registrant.cc
+
+mobile/flutter/project/freedom_timer/linux/flutter/generated_plugins.cmake
