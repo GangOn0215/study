@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/theme/app_colors.dart';
-import 'package:freedom_timer/widgets/home/header_title.dart';
-import 'package:freedom_timer/widgets/home/welcome_message.dart';
+import 'package:freedom_timer/widgets/home_header_title.dart';
+import 'package:freedom_timer/widgets/home_welcome_message.dart';
 
 /// 메인 화면 입니다!
 class HomeScreen extends StatelessWidget {
