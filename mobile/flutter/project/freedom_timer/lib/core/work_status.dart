@@ -1,5 +1,7 @@
 // core/work_status.dart
 
+import 'package:freedom_timer/core/work_config.dart';
+
 enum WorkPhase { before, working, after, weekend }
 
 class WorkStatus {
@@ -10,8 +12,8 @@ class WorkStatus {
   const WorkStatus(this.phase, this.remain, this.target);
 }
 
-const int kStartHour = 9;
-const int kEndHour = 18;
+// int kStartHour = WorkConfig.instance.startHour;
+// int kEndHour = WorkConfig.instance.endHour;
 
 bool _isWeekend(DateTime d) {
   // now Datetime을 구해, 오늘이 주말인지 확인한다
@@ -31,12 +33,12 @@ DateTime _nextWorkdayStart(DateTime now) {
     d = d.add(const Duration(days: 1));
   }
 
-  return DateTime(d.year, d.month, d.day, kStartHour);
+  return DateTime(d.year, d.month, d.day, WorkConfig.instance.startHour);
 }
 
 WorkStatus getWorkStatus(DateTime now) {
-  final start = _todayAt(now, kStartHour);
-  final end = _todayAt(now, kEndHour);
+  final start = _todayAt(now, WorkConfig.instance.startHour);
+  final end = _todayAt(now, WorkConfig.instance.endHour);
 
   // 주말
   if (_isWeekend(now)) {

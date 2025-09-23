@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/theme/app_theme.dart';
 import 'routes/app_router.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // 전역 설정 객체
 class WorkConfig {
@@ -22,6 +23,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
 
