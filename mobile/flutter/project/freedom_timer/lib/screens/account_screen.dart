@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/widgets/account_header_icon.dart';
 import 'package:freedom_timer/widgets/account_header_manage.dart';
-import 'package:freedom_timer/widgets/account_header_text.dart';
+import 'package:freedom_timer/widgets/account_header_info.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -22,14 +22,16 @@ class _AccountScreenState extends State<AccountScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // 아이콘과 Column 세로 정렬
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AccountHeaderIcon(),
-                  const SizedBox(width: 12), // 아이콘과 텍스트 사이 간격
-                  AccountHeaderText(),
-                  SizedBox(width: 80),
-                  AccountHeaderManage(),
+                  Row(
+                    children: [
+                      AccountHeaderIcon(), // 회원의 프로필 이미지
+                      const SizedBox(width: 12), // 아이콘과 텍스트 사이 간격
+                      AccountHeaderInfo(), // 회원의 닉네임
+                    ],
+                  ),
+                  Row(children: [AccountHeaderManage(), SizedBox(width: 10)]),
                 ],
               ),
             ),

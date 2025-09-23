@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AccountHeaderText extends StatelessWidget {
-  const AccountHeaderText({super.key});
+class AccountHeaderInfo extends StatelessWidget {
+  const AccountHeaderInfo({super.key});
 
   @override
   Widget build(BuildContext context) {

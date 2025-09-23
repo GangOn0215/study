@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:freedom_timer/theme/app_theme.dart';
 import 'routes/app_router.dart';
 
+// 전역 설정 객체
+class WorkConfig {
+  int startHour;
+  int endHour;
+
+  WorkConfig({this.startHour = 9, this.endHour = 18});
+
+  static final WorkConfig instance = WorkConfig();
+}
+
 void main() {
   runApp(const MainApp());
 }
