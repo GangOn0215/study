@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 
-class HeaderTitle extends StatelessWidget {
-  const HeaderTitle({super.key});
+class HomeHeaderTitle extends StatelessWidget {
+  const HomeHeaderTitle({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    final today = DateTime.now();
+    final formatted = "${today.year}-${two(today.month)}-${two(today.day)}";
+
     return Container(
-      color: Colors.white,
+      color: Colors.lightBlueAccent,
       padding: EdgeInsets.symmetric(vertical: 8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: SizedBox()), // 왼쪽 비우기
-          Expanded(
-            child: Center(
-              child: Text('2025-01-01', style: TextStyle(fontSize: 24)),
-            ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.more_horiz_outlined, size: 28),
-              ),
-            ),
+          SizedBox(width: 48), // 왼쪽 공간 확보 (아이콘 맞추고 싶을 때)
+          Text(formatted, style: TextStyle(fontSize: 24)),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.more_horiz_outlined, size: 28),
           ),
         ],
       ),
