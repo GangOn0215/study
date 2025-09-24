@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/core/work_config.dart';
+import 'package:freedom_timer/theme/app_colors.dart';
 
 class WorkConfigForm extends StatefulWidget {
   final void Function(WorkConfig) onSaved;
@@ -72,7 +73,19 @@ class _WorkConfigFormState extends State<WorkConfigForm> {
           ),
         ),
         const SizedBox(height: 20),
-        ElevatedButton(onPressed: _save, child: const Text("저장")),
+        ElevatedButton(
+          onPressed: _save,
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(AppColors.buttonPrimaryBg),
+            foregroundColor: WidgetStateProperty.all(
+              AppColors.buttonPrimaryText,
+            ),
+            padding: WidgetStateProperty.all(
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            ), // 패딩
+          ),
+          child: const Text("저장", style: TextStyle(fontSize: 18)),
+        ),
       ],
     );
   }
