@@ -17,10 +17,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(automaticallyImplyLeading: false, title: Text('냥이월드 🐱')),
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(flex: 1, child: HomeHeaderTitle()),
-            Expanded(flex: 5, child: WaitingCat()),
-            Expanded(flex: 2, child: WorkConfigForm(onSaved: (workConfig) {})),
+            HomeHeaderTitle(),
+            WaitingCat(),
+            WorkConfigForm(onSaved: (workConfig) {}),
           ],
         ),
       ),

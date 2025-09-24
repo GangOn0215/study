@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freedom_timer/theme/app_colors.dart';
 
 class HomeHeaderTitle extends StatelessWidget {
   const HomeHeaderTitle({super.key});
@@ -10,12 +11,12 @@ class HomeHeaderTitle extends StatelessWidget {
     final formatted = "${today.year}-${two(today.month)}-${two(today.day)}";
 
     return Container(
-      color: Colors.lightBlueAccent,
+      color: AppColors.info,
       padding: EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(width: 48), // 왼쪽 공간 확보 (아이콘 맞추고 싶을 때)
+          SizedBox(width: 48),
           Text(formatted, style: TextStyle(fontSize: 24)),
           IconButton(
             onPressed: () {},

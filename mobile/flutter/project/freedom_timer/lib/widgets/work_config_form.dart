@@ -72,7 +72,7 @@ class _WorkConfigFormState extends State<WorkConfigForm> {
             onPressed: _pickEndTime,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         ElevatedButton(
           onPressed: _save,
           style: ButtonStyle(
@@ -86,6 +86,7 @@ class _WorkConfigFormState extends State<WorkConfigForm> {
           ),
           child: const Text("저장", style: TextStyle(fontSize: 18)),
         ),
+        SizedBox(height: 20),
       ],
     );
   }
