@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freedom_timer/theme/app_colors.dart';
 
 class AccountHeaderManage extends StatelessWidget {
   const AccountHeaderManage({super.key});
@@ -8,16 +9,17 @@ class AccountHeaderManage extends StatelessWidget {
     return Column(
       children: [
         Container(
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
-            color: Colors.purple,
+            color: AppColors.buttonPrimaryText,
             borderRadius: BorderRadius.all(Radius.circular(50)),
           ),
           child: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.manage_accounts, color: Colors.white),
+            icon: Icon(Icons.manage_accounts, color: Colors.white, size: 20),
           ),
         ),
-        SizedBox(height: 50),
       ],
     );
   }

@@ -13,6 +13,8 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false, title: Text('팡팡월드 🐱')),
       body: Column(
@@ -20,18 +22,27 @@ class _AccountScreenState extends State<AccountScreen> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      AccountHeaderIcon(), // 회원의 프로필 이미지
-                      const SizedBox(width: 12), // 아이콘과 텍스트 사이 간격
-                      AccountHeaderInfo(), // 회원의 닉네임
-                    ],
+                  // 왼쪽 영역 (아이콘 + 정보)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: screenWidth * 0.24, // 화면 너비의 18%
+                          child: const AccountHeaderIcon(),
+                        ),
+                        Expanded(
+                          child: AccountHeaderInfo(), // 닉네임 + 이메일
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(children: [AccountHeaderManage(), SizedBox(width: 10)]),
+                  // 오른쪽 관리 버튼
+                  const AccountHeaderManage(),
                 ],
               ),
             ),

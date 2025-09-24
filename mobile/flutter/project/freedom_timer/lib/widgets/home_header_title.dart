@@ -11,7 +11,6 @@ class HomeHeaderTitle extends StatelessWidget {
     final formatted = "${today.year}-${two(today.month)}-${two(today.day)}";
 
     return Container(
-      color: AppColors.info,
       padding: EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

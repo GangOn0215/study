@@ -81,7 +81,7 @@ class _WorkConfigFormState extends State<WorkConfigForm> {
               AppColors.buttonPrimaryText,
             ),
             padding: WidgetStateProperty.all(
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
             ), // 패딩
           ),
           child: const Text("저장", style: TextStyle(fontSize: 18)),
