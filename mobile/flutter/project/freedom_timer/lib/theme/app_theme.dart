@@ -9,7 +9,7 @@ class AppTheme {
 
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.background,
-      shadowColor: AppColors.grey,
+      shadowColor: AppColors.grey300,
       elevation: 2,
       centerTitle: true,
       titleTextStyle: AppTextStyles.appBarTitle,
@@ -18,7 +18,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.text,
+        foregroundColor: AppColors.textPrimary,
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

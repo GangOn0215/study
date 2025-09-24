@@ -27,8 +27,8 @@ class FooterNavigation extends StatelessWidget {
       },
       type: BottomNavigationBarType.fixed, // 아이템 2개 이상일 때 권장
       backgroundColor: Colors.white,
-      selectedItemColor: AppColors.navSelectedColor, // 노란색
-      unselectedItemColor: AppColors.navUnselectedItemColor,
+      selectedItemColor: AppColors.navSelected, // 노란색
+      unselectedItemColor: AppColors.navUnselected,
       selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
       elevation: 10,
       items: const [

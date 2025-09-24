@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.text, // 진한 차콜
+                color: AppColors.textPrimary, // 진한 차콜
               ),
               textAlign: TextAlign.center,
             ),
