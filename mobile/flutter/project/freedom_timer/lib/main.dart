@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:freedom_timer/core/work_config.dart';
 import 'package:freedom_timer/theme/app_theme.dart';
 import 'routes/app_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-// 전역 설정 객체
-class WorkConfig {
-  int startHour;
-  int endHour;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await WorkConfig.instance.load(); // 저장된 값 불러오기
 
-  WorkConfig({this.startHour = 9, this.endHour = 18});
-
-  static final WorkConfig instance = WorkConfig();
-}
-
-void main() {
   runApp(const MainApp());
 }
 

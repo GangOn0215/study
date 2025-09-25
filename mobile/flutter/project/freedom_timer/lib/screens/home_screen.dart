@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:freedom_timer/widgets/lottie/waiting_cat.dart';
 import 'package:freedom_timer/theme/app_colors.dart';
 import 'package:freedom_timer/widgets/home_header_title.dart';
-import 'package:freedom_timer/widgets/work_config_form.dart';
 
 /// 메인 화면 입니다!
 class HomeScreen extends StatelessWidget {
@@ -16,11 +15,7 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            HomeHeaderTitle(),
-            WaitingCat(),
-            WorkConfigForm(onSaved: (workConfig) {}),
-          ],
+          children: [HomeHeaderTitle(), WaitingCat(), Container()],
         ),
       ),
     );
