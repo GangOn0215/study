@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 class WorkConfig {
   int startHour; // 출근 시간
   int startMinute; // 출근 분
@@ -19,4 +21,22 @@ class WorkConfig {
 
   DateTime todayStart(DateTime now) =>
       DateTime(now.year, now.month, startHour, 0);
+
+  // 저장
+  Future<void> save() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('startHour', startHour);
+    await prefs.setInt('startMinute', startMinute);
+    await prefs.setInt('endHour', endHour);
+    await prefs.setInt('endMinute', endMinute);
+  }
+
+  // 불러오기
+  Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    startHour = prefs.getInt('startHour') ?? 9;
+    startMinute = prefs.getInt('startMinute') ?? 0;
+    endHour = prefs.getInt('endHour') ?? 18;
+    endMinute = prefs.getInt('endMinute') ?? 0;
+  }
 }
