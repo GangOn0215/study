@@ -8,18 +8,18 @@ class WaitingCat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          "출근 기다리는중...",
+        SizedBox(
+          width: 300,
+          height: 300,
+          child: Lottie.asset('assets/animations/waiting_cat.json'),
+        ),
+        Text(
+          "출근 기다리는중... 😭",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
-        ),
-        SizedBox(
-          width: 300,
-          height: 300,
-          child: Lottie.asset('assets/animations/waiting_cat.json'),
         ),
       ],
     );
