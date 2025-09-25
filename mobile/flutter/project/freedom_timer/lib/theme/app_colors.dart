@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // 기본 배경 (보노보노 느낌 파스텔 톤)
-  static const background = Color(0xFFF9FAFB); // 거의 화이트에 가까운 밝은 회색
+  static const background = Color(0xFFECEFF1); // 거의 화이트에 가까운 밝은 회색
 
   // 주요 포인트 컬러 (보노보노 톤 블루 & 민트)
   static const primary = Color(0xFF8EC5FC); // 파스텔 블루
