@@ -22,8 +22,6 @@ class _AccountScreenState extends State<AccountScreen> {
     int endHour = WorkConfig.instance.endHour;
     int endMinute = WorkConfig.instance.endMinute;
 
-    print(WorkConfig.instance.startHour);
-
     String settingTime = "";
 
     TimeOfDay start = TimeOfDay(
