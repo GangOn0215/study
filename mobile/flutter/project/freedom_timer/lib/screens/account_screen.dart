@@ -140,10 +140,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                   children: [
                                     Text(
                                       '출근 시간 변경',
-                                      style: TextStyle(fontSize: 24),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                     Row(
-                                      children: [Icon(Icons.login, size: 32)],
+                                      children: [Icon(Icons.login, size: 28)],
                                     ),
                                   ],
                                 ),
@@ -177,7 +177,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   children: [
                                     Text(
                                       '퇴근 시간 변경',
-                                      style: TextStyle(fontSize: 24),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                     Row(
                                       children: [Icon(Icons.logout, size: 32)],

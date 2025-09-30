@@ -7,7 +7,7 @@ class FooterNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paths = ['/', '/timer', '/account']; // 탭에 대응하는 경로들
+    final paths = ['/', '/timer', '/account', '/login']; // 탭에 대응하는 경로들
     final String currentPath = GoRouterState.of(context).uri.toString();
 
     // 현재 경로가 paths 안에서 몇 번째인지 찾는다.
@@ -38,6 +38,7 @@ class FooterNavigation extends StatelessWidget {
           icon: Icon(Icons.account_circle_rounded),
           label: 'Account',
         ),
+        BottomNavigationBarItem(icon: Icon(Icons.lock_open), label: 'Login'),
       ],
     );
   }
