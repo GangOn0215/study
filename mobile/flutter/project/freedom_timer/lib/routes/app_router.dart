@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/screens/account_screen.dart';
+import 'package:freedom_timer/screens/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/home_screen.dart';
 import '../screens/splash_screen.dart';
@@ -33,6 +34,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: AppRoutes.account,
           builder: (context, state) => AccountScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.login,
+          builder: (context, state) => LoginScreen(),
         ),
       ],
     ),
