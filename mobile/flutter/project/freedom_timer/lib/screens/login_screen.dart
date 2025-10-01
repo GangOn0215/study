@@ -61,6 +61,15 @@ class _LoginScreenState extends State<LoginScreen> {
       final userData = await _kakaoAuth.loginWithCode(code);
       print('로그인 성공! 회원: ${userData['nickname']}');
 
+      // 환영 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${userData['nickname']} 님! 👋 반가워!'),
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+
       if (!mounted) return;
 
       setState(() {
@@ -70,7 +79,6 @@ class _LoginScreenState extends State<LoginScreen> {
       print('로그인 실패: $e');
 
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('로그인 실패: $e'),
