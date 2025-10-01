@@ -1,44 +1,100 @@
-// lib/services/storage_service.dart
-
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
-  // 저장할 때 사용할 키 이름
-  static const String _tokenKey = 'auth_token';
-
-  /// 토큰 저장
-  Future<void> saveToken(String token) async {
-    // 1. 저장소 열기
+  /// 문자열 저장
+  Future<void> setString(String key, String value) async {
     final prefs = await SharedPreferences.getInstance();
-
-    // 2. 'auth_token'이라는 이름으로 토큰 저장
-    await prefs.setString(_tokenKey, token);
+    await prefs.setString(key, value);
   }
 
-  /// 토큰 가져오기
-  Future<String?> getToken() async {
-    // 1. 저장소 열기
+  /// 문자열 가져오기
+  Future<String?> getString(String key) async {
     final prefs = await SharedPreferences.getInstance();
-
-    // 2. 'auth_token' 이름으로 저장된 값 가져오기
-    return prefs.getString(_tokenKey);
-    // 없으면 null 반환
+    return prefs.getString(key);
   }
 
-  /// 토큰 삭제
-  Future<void> removeToken() async {
-    // 1. 저장소 열기
+  /// 정수 저장
+  Future<void> setInt(String key, int value) async {
     final prefs = await SharedPreferences.getInstance();
-
-    // 2. 'auth_token' 삭제
-    await prefs.remove(_tokenKey);
+    await prefs.setInt(key, value);
   }
 
-  /// 로그인 여부 확인
-  Future<bool> isLoggedIn() async {
-    // 토큰이 있으면 로그인된 것
-    final token = await getToken();
+  /// 정수 가져오기
+  Future<int?> getInt(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(key);
+  }
 
-    return token != null && token.isNotEmpty;
+  /// 불린 저장
+  Future<void> setBool(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
+
+  /// 불린 가져오기
+  Future<bool?> getBool(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key);
+  }
+
+  /// JSON 객체 저장
+  Future<void> setJson(String key, Map<String, dynamic> value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, jsonEncode(value));
+  }
+
+  /// JSON 객체 가져오기
+  Future<Map<String, dynamic>?> getJson(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(key);
+
+    if (jsonString == null) return null;
+
+    return jsonDecode(jsonString) as Map<String, dynamic>;
+  }
+
+  /// 리스트 저장
+  Future<void> setStringList(String key, List<String> value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(key, value);
+  }
+
+  /// 리스트 가져오기
+  Future<List<String>?> getStringList(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(key);
+  }
+
+  /// 특정 키 삭제
+  Future<void> remove(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+  }
+
+  /// 여러 키 삭제
+  Future<void> removeMultiple(List<String> keys) async {
+    final prefs = await SharedPreferences.getInstance();
+    for (final key in keys) {
+      await prefs.remove(key);
+    }
+  }
+
+  /// 모든 데이터 삭제
+  Future<void> clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
+  /// 키 존재 여부 확인
+  Future<bool> containsKey(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(key);
+  }
+
+  /// 모든 키 가져오기
+  Future<Set<String>> getAllKeys() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getKeys();
   }
 }

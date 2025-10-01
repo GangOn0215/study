@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
-import 'package:freedom_timer/screens/home_screen.dart';
 import 'package:freedom_timer/screens/kakao_login_webview.dart';
-import 'package:freedom_timer/services/api/auth_api_service.dart';
+import 'package:freedom_timer/services/api/auth_storage_service.dart';
+import 'package:freedom_timer/services/api/kakao_storage_service.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,16 +12,37 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthApiService _authApi = AuthApiService();
+  final KakaoAuthService _kakaoAuth = KakaoAuthService();
+  bool _isLoading = false;
+  bool _isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final isLoggedIn = await _kakaoAuth.isLoggedIn();
+
+    if (mounted) {
+      setState(() {
+        _isLoggedIn = isLoggedIn;
+      });
+    }
+  }
 
   Future<void> _loginWithKakao() async {
-    try {
-      // 1️⃣ 카카오 로그인 URL 가져오기
-      print('1단계: 로그인 URL 요청');
-      String loginUrl = await _authApi.getKakaoLoginUrl();
-      print('받은 URL: $loginUrl');
+    if (_isLoading) return;
 
-      // 2️⃣ 웹뷰로 카카오 로그인 페이지 열기
+    setState(() => _isLoading = true);
+
+    try {
+      print('1단계: 로그인 URL 요청');
+      final loginUrl = await _kakaoAuth.getLoginUrl();
+
+      if (!mounted) return;
+
       print('2단계: 웹뷰 열기');
       final code = await Navigator.push<String>(
         context,
@@ -31,27 +51,60 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
-      print('받은 인가 코드: $code');
-
       if (code == null) {
-        throw Exception('로그인 취소됨');
+        print('로그인 취소됨');
+        setState(() => _isLoading = false);
+        return;
       }
 
-      // 3️⃣ 인가 코드로 토큰 받기
-      print('3단계: 토큰 받기');
-      final member = await _authApi.kakaoCallback(code);
-      print('로그인 성공! 회원: ${member['nickname']}');
+      print('3단계: 로그인 처리 및 데이터 저장');
+      final userData = await _kakaoAuth.loginWithCode(code);
+      print('로그인 성공! 회원: ${userData['nickname']}');
 
-      // 4️⃣ 홈 화면으로 이동
-      print('4단계: 홈으로 이동');
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
-    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        _isLoggedIn = true;
+      });
+    } catch (e, stackTrace) {
       print('로그인 실패: $e');
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('로그인 실패: $e'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _logout() async {
+    setState(() => _isLoading = true);
+
+    try {
+      await _kakaoAuth.logout();
+
+      if (mounted) {
+        setState(() {
+          _isLoggedIn = false;
+        });
+      }
+
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('로그인 실패: $e')));
+      ).showSnackBar(const SnackBar(content: Text('로그아웃 완료')));
+    } catch (e) {
+      print('로그아웃 실패: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -59,9 +112,38 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: _loginWithKakao,
-          child: Text('카카오 로그인'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              _isLoggedIn ? '로그인 상태' : '카카오로 시작하기',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isLoading
+                  ? null
+                  : (_isLoggedIn ? _logout : _loginWithKakao),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFEE500),
+                foregroundColor: Colors.black87,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 15,
+                ),
+              ),
+              child: _isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(
+                      _isLoggedIn ? '로그아웃' : '카카오 로그인',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+            ),
+          ],
         ),
       ),
     );

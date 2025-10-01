@@ -23,15 +23,25 @@ class _KakaoLoginWebViewState extends State<KakaoLoginWebView> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
+            print('페이지 시작: $url');
             setState(() => isLoading = true);
-
-            // 콜백 URL 체크
-            if (url.contains('/api/kakao/callback')) {
-              _handleCallback(url);
-            }
           },
           onPageFinished: (url) {
+            print('페이지 완료: $url');
             setState(() => isLoading = false);
+          },
+          // ⭐ 이 부분을 추가!
+          onNavigationRequest: (request) {
+            print('네비게이션 요청: ${request.url}');
+
+            // 콜백 URL이면 페이지 로드 차단하고 code만 추출
+            if (request.url.contains('/api/kakao/callback')) {
+              print('콜백 URL 감지, 가로채기!');
+              _handleCallback(request.url);
+              return NavigationDecision.prevent; // 페이지 로드 방지
+            }
+
+            return NavigationDecision.navigate; // 다른 URL은 정상 진행
           },
         ),
       )
