@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:freedom_timer/theme/app_colors.dart';
 
 class HomeHeaderTitle extends StatelessWidget {
   const HomeHeaderTitle({super.key});

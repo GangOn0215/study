@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/screens/kakao_login_webview.dart';
-import 'package:freedom_timer/services/api/auth_storage_service.dart';
-import 'package:freedom_timer/services/api/kakao_storage_service.dart';
-import 'package:go_router/go_router.dart';
+import 'package:freedom_timer/services/api/kakao_auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
