@@ -18,6 +18,7 @@ dependencies:
   dio: ^5.4.0 # HTTP 통신
   webview_flutter: ^4.4.2 # 카카오 로그인 웹뷰
   flutter_lints: ^5.0.0
+  kakao_flutter_sdk: ^1.9.7+3
 
 dev_dependencies:
   flutter_test:
