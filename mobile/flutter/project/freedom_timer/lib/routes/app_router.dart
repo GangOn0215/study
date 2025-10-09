@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/screens/account_screen.dart';
+import 'package:freedom_timer/screens/kakao_login.dart';
 import 'package:freedom_timer/screens/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/home_screen.dart';
@@ -38,6 +39,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: AppRoutes.login,
           builder: (context, state) => LoginScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.kakaoLogin,
+          builder: (context, state) => KakaoLogin(),
         ),
       ],
     ),
