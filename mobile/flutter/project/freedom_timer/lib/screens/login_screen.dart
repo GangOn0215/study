@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/screens/kakao_login_webview.dart';
-import 'package:freedom_timer/services/api/auth_storage_service.dart';
 import 'package:freedom_timer/services/api/kakao_storage_service.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -61,17 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
       final userData = await _kakaoAuth.loginWithCode(code);
       print('로그인 성공! 회원: ${userData['nickname']}');
 
+      if (!mounted) return;
+
       // 환영 메시지 표시
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${userData['nickname']} 님! 👋 반가워!'),
+          content: Text('${userData['nickname']} 님! 👋 반가워요!'),
           duration: const Duration(seconds: 1),
           behavior: SnackBarBehavior.floating,
         ),
       );
-
-      if (!mounted) return;
-
       setState(() {
         _isLoggedIn = true;
       });
@@ -98,11 +95,13 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await _kakaoAuth.logout();
 
-      if (mounted) {
-        setState(() {
-          _isLoggedIn = false;
-        });
+      if (!mounted) {
+        return;
       }
+
+      setState(() {
+        _isLoggedIn = false;
+      });
 
       ScaffoldMessenger.of(
         context,
