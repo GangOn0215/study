@@ -18,7 +18,11 @@ dependencies:
   dio: ^5.4.0
   webview_flutter: ^4.4.2
   flutter_lints: ^5.0.0
+<<<<<<< HEAD
   kakao_flutter_sdk_user: ^1.9.5
+=======
+  kakao_flutter_sdk: ^1.9.7+3
+>>>>>>> origin/main
 
 dev_dependencies:
   flutter_test:

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:freedom_timer/config/secrets/secrets.dart';
 import 'package:freedom_timer/core/work_config.dart';
 import 'package:freedom_timer/theme/app_theme.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'routes/app_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await WorkConfig.instance.load(); // 저장된 값 불러오기
+
+  KakaoSdk.init(nativeAppKey: kakaoNativeKey, javaScriptAppKey: kakaoJsKey);
 
   runApp(const MainApp());
 }

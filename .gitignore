@@ -122,3 +122,5 @@ mobile/flutter/project/freedom_timer/linux/flutter/generated_plugin_registrant.h
 mobile/flutter/project/freedom_timer/linux/flutter/generated_plugin_registrant.cc
 
 mobile/flutter/project/freedom_timer/linux/flutter/generated_plugins.cmake
+
+mobile/flutter/project/freedom_timer/lib/config/secrets/secrets.dart
