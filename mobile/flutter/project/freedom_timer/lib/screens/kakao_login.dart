@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:freedom_timer/models/kakao_user.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
@@ -21,11 +22,11 @@ class _KakaoLoginState extends State<KakaoLogin> {
   }
 
   Future<void> _initLogin() async {
-    var success = await checkKakaoLogin();
+    KakaoUser? kakaoUser = await checkKakaoLogin();
 
     if (!mounted) return;
 
-    if (success) {
+    if (kakaoUser != null) {
       context.go('/');
     } else {
       setState(() {
@@ -35,39 +36,40 @@ class _KakaoLoginState extends State<KakaoLogin> {
     }
   }
 
-  Future<bool> checkKakaoLogin() async {
+  Future<KakaoUser?> checkKakaoLogin() async {
     try {
+      User userInfo;
+      OAuthToken token;
+
       if (await isKakaoTalkInstalled()) {
-        print('✅ 카카오톡 로그인 시도');
-        var token = await UserApi.instance.loginWithKakaoTalk();
-
-        print(token);
-        return true;
+        print('Kakao App Login');
+        token = await UserApi.instance.loginWithKakaoTalk();
       } else {
-        print('✅ 카카오계정 로그인 시도');
-        var token = await UserApi.instance.loginWithKakaoAccount();
-        var userInfo = await UserApi.instance.me();
-
-        print(token);
-        print(userInfo);
-
-        return true;
+        print('Kakao Login');
+        token = await UserApi.instance.loginWithKakaoAccount();
       }
+
+      print('Get Kakao user');
+      userInfo = await UserApi.instance.me();
+      KakaoUser userData = KakaoUser.fromJson(userInfo.toJson());
+      userData.setToken(token);
+
+      return userData;
     } catch (error) {
       print('❌ 로그인 실패: $error');
 
       if (error is PlatformException && error.code == 'CANCELED') {
         print('사용자가 로그인 취소');
-        return false;
+        return null;
       }
 
       try {
         print('🔁 fallback: 카카오계정 로그인 재시도');
         await UserApi.instance.loginWithKakaoAccount();
-        return true;
+        return null;
       } catch (error) {
         print('❌ fallback 실패: $error');
-        return false;
+        return null;
       }
     }
   }
