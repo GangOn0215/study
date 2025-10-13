@@ -34,6 +34,16 @@ class KakaoUser {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "nickname": nickname,
+      "profile_image": profileImage,
+      "email": email,
+      "connected_at": connectedAt?.toIso8601String(),
+    };
+  }
+
   void setToken(OAuthToken token) {
     this.token = token;
   }
