@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freedom_timer/models/kakao_user.dart';
+import 'package:freedom_timer/utils/user_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
@@ -51,8 +52,11 @@ class _KakaoLoginState extends State<KakaoLogin> {
 
       print('Get Kakao user');
       userInfo = await UserApi.instance.me();
+
       KakaoUser userData = KakaoUser.fromJson(userInfo.toJson());
       userData.setToken(token);
+
+      await UserPreferences.saveUser(userData);
 
       return userData;
     } catch (error) {
