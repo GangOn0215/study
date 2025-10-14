@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:freedom_timer/models/kakao_user.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
@@ -16,8 +17,6 @@ class UserPreferences {
     final userJson = jsonEncode(userMap);
 
     await prefs.setString(_keyUser, userJson);
-
-    print('save user information');
   }
 
   static Future<KakaoUser?> loadUser() async {
@@ -40,12 +39,32 @@ class UserPreferences {
     }
 
     // 문자열 + JSON ( MAP )
-    Map<String, dynamic> userMap = jsonDecode(userJson);
+    var userMap = jsonDecode(userJson);
 
-    print(userJson);
-    print(userMap);
+    // 여기에서 에러가 발생합니다.
+    /// 에러 원인은 kakao 에서 instance.me() 로 가져왔을때, json 의 형태와 제가 임의로
+    /// toJson으로 바꿔서 로컬스토리지에 저장 했기 때문에 당연히 그걸 다시 가져 왔으니, fromJson에 넣으면
+    /// 에러가 나던 것 입니다.
+    ///
+    ///    >>> fromJson <<<
+    ///
+    //     id: json["id"],
+    //     nickname: json["properties"]["nickname"],
+    //     profileImage: json["properties"]["profile_image"],
+    //     email: json["kakao_account"]?["email"],
+    //     connectedAt: json["connected_at"] != null ? DateTime.parse(json["connected_at"]) : null,
 
-    final user = KakaoUser.fromJson(userMap);
+    //     >>> toJson <<<
+    //
+    //    "id": id,
+    //    "nickname": nickname,
+    //    "profile_image": profileImage,
+    //    "email": email,
+    //    "connected_at": connectedAt?.toIso8601String(),
+    //
+
+    // final user = KakaoUser.fromJson(userMap);
+    final user = KakaoUser.fromLocalJson(userMap);
 
     return user;
   }
@@ -56,6 +75,6 @@ class UserPreferences {
 
     prefs.remove(_keyUser);
 
-    print('사용자 정보 삭제 완료');
+    await UserApi.instance.logout();
   }
 }

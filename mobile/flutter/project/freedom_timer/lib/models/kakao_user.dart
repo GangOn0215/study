@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 class KakaoUser {
@@ -31,6 +32,16 @@ class KakaoUser {
       connectedAt: json["connected_at"] != null
           ? DateTime.parse(json["connected_at"])
           : null,
+    );
+  }
+
+  factory KakaoUser.fromLocalJson(Map<String, dynamic> json) {
+    return KakaoUser(
+      id: json["id"],
+      nickname: json["nickname"],
+      profileImage: json["profileImage"],
+      email: json["email"],
+      connectedAt: json["connectedAt"],
     );
   }
 
