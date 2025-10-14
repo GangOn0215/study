@@ -40,7 +40,10 @@ class UserPreferences {
     }
 
     // 문자열 + JSON ( MAP )
-    final userMap = jsonDecode(userJson);
+    Map<String, dynamic> userMap = jsonDecode(userJson);
+
+    print(userJson);
+    print(userMap);
 
     final user = KakaoUser.fromJson(userMap);
 

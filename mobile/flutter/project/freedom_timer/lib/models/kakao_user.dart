@@ -6,7 +6,7 @@ class KakaoUser {
   final String? profileImage; // 카카오 이미지
   final String? email; // 카카오 이메일
   final DateTime? connectedAt; // 카카오 연결일시
-  late final OAuthToken? token; //  토큰
+  OAuthToken? token; //  토큰
 
   KakaoUser({
     required this.id,
