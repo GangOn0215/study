@@ -15,15 +15,40 @@ class KakaoLogin extends StatefulWidget {
 class _KakaoLoginState extends State<KakaoLogin> {
   bool _isLoading = false;
   bool _loginFailed = false;
+  bool _isLogin = false;
 
   @override
   void initState() {
     super.initState();
+
+    _checkLogin();
     // _initLogin();
   }
 
+  Future<bool> _checkLogin() async {
+    try {
+      KakaoUser? user = await UserPreferences.loadUser();
+
+      print(">>>");
+      print(user);
+
+      if (user != null) {
+        setState(() {
+          _isLogin = true;
+        });
+        return true;
+      }
+    } catch (error) {
+      print('문제 발생');
+      print(error);
+      return false;
+    }
+
+    return false;
+  }
+
   Future<void> _initLogin() async {
-    KakaoUser? kakaoUser = await checkKakaoLogin();
+    KakaoUser? kakaoUser = await _checkKakaoLogin();
 
     if (!mounted) return;
 
@@ -37,7 +62,7 @@ class _KakaoLoginState extends State<KakaoLogin> {
     }
   }
 
-  Future<KakaoUser?> checkKakaoLogin() async {
+  Future<KakaoUser?> _checkKakaoLogin() async {
     try {
       User userInfo;
       OAuthToken token;
