@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:freedom_timer/models/kakao_user.dart';
 import 'package:freedom_timer/utils/user_preferences.dart';
+import 'package:freedom_timer/widgets/components/button/kakao_login_button.dart';
+import 'package:freedom_timer/widgets/components/button/kakao_logout_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
@@ -30,17 +32,14 @@ class _KakaoLoginState extends State<KakaoLogin> {
     try {
       KakaoUser? user = await UserPreferences.loadUser();
 
-      print(">>>");
-      print(user);
-
       if (user != null) {
         setState(() {
           _isLogin = true;
         });
+
         return true;
       }
     } catch (error) {
-      print('문제 발생');
       print(error);
       return false;
     }
@@ -144,18 +143,8 @@ class _KakaoLoginState extends State<KakaoLogin> {
               height: 50,
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _onLoginButtonPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFEE500), // 카카오 노란색
-                foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 12,
-                ),
-              ),
-              child: const Text('카카오로 로그인'),
-            ),
+            KakaoLoginButton(onLoginButtonPressed: _onLoginButtonPressed),
+            KakaoLogoutButton(onKakaoLogout: _onKakaoLogout),
             if (_loginFailed)
               const Padding(
                 padding: EdgeInsets.only(top: 16),
@@ -164,18 +153,6 @@ class _KakaoLoginState extends State<KakaoLogin> {
                   style: TextStyle(color: Colors.red),
                 ),
               ),
-            ElevatedButton(
-              onPressed: _onKakaoLogout,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFE003B), // 카카오 노란색
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 12,
-                ),
-              ),
-              child: Text('카카오 로그아웃'),
-            ),
           ],
         ),
       ),
