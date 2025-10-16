@@ -10,11 +10,12 @@ import '../common/footer_navigation.dart';
 import 'app_routes.dart';
 
 final appRouter = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: '/',
   routes: [
+    GoRoute(path: '/', builder: (context, state) => SplashScreen()),
     GoRoute(
-      path: AppRoutes.splash,
-      builder: (context, state) => SplashScreen(),
+      path: AppRoutes.login,
+      builder: (context, state) => LoginIntroScreen(),
     ),
     ShellRoute(
       builder: (context, state, child) {
@@ -35,10 +36,6 @@ final appRouter = GoRouter(
         GoRoute(
           path: AppRoutes.account,
           builder: (context, state) => AccountScreen(),
-        ),
-        GoRoute(
-          path: AppRoutes.login,
-          builder: (context, state) => LoginScreen(),
         ),
         GoRoute(
           path: AppRoutes.kakaoLogin,

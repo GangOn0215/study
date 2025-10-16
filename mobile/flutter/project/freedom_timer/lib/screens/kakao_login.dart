@@ -53,7 +53,7 @@ class _KakaoLoginState extends State<KakaoLogin> {
     if (!mounted) return;
 
     if (kakaoUser != null) {
-      context.go('/');
+      context.go('/home');
     } else {
       setState(() {
         _isLoading = false;

@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // 2초 후 Home 으로 이동
     Timer(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go('/');
+        context.go('/login');
       }
     });
   }

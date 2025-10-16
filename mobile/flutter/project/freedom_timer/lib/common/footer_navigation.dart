@@ -8,7 +8,7 @@ class FooterNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paths = [
-      '/',
+      '/home',
       '/timer',
       '/account',
       '/login',
