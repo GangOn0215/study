@@ -1,15 +1,25 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:freedom_timer/provider/kakao_auth_provider.dart';
+import 'package:freedom_timer/screens/kakao_login_webview.dart';
+import 'package:freedom_timer/services/api/kakao_auth_service.dart';
+import 'package:freedom_timer/theme/app_colors.dart';
+import 'package:go_router/go_router.dart';
+
+class LoginIntroScreen extends StatefulWidget {
+  const LoginIntroScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginIntroScreen> createState() => _LoginIntroScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginIntroScreenState extends State<LoginIntroScreen> {
+  final KakaoAuthService _kakaoAuth = KakaoAuthService();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -24,13 +34,86 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  Future<void> _loginWithKakao() async {
+    if (_isLoading) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final loginUrl = await KakaoAuthProvider().getLoginUrl();
+
+      if (!mounted) return;
+
+      print('2단계: 웹뷰 열기');
+
+      final code = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => KakaoLoginWebView(loginUrl: loginUrl),
+        ),
+      );
+
+      if (code == null) {
+        print('로그인 취소됨');
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      print('3단계: 로그인 처리 및 데이터 저장');
+      final userData = await _kakaoAuth.loginWithCode(code);
+      print('로그인 성공! 회원: ${userData['nickname']}');
+
+      if (!mounted) return;
+
+      // 환영 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${userData['nickname']} 님! 👋 반가워요!'),
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+
+      Timer(const Duration(seconds: 2), () {
+        if (mounted) {
+          context.go('/home');
+        }
+      });
+    } catch (e) {
+      print('로그인 실패: $e');
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('로그인 실패: $e'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _login() {
+    print(emailController.text);
+    print(passwordController.text);
+
+    Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        context.go('/home');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 60),
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 30),
             child: Column(
               children: [
                 Center(
@@ -83,29 +166,46 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
+                    ElevatedButton(
                       onPressed: () {},
-                      child: Text(
-                        '회원가입',
-                        style: TextStyle(color: Color(0xFF757575)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.background,
+                        foregroundColor: Color(0XFF757575),
+                        // 모든 효과 제거!
+                        overlayColor: Colors.transparent, // 이게 핵심!
+                        shadowColor: Colors.transparent, // 그림자도 제거
+                        elevation: 0, // 높이도 0
                       ),
+                      child: Text('회원가입'),
                     ),
                     Row(
                       children: [
-                        TextButton(
+                        ElevatedButton(
                           onPressed: () {},
-                          child: Text(
-                            '아이디 찾기',
-                            style: TextStyle(color: Color(0xFF757575)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.background,
+                            foregroundColor: Color(0XFF757575),
+                            // 모든 효과 제거!
+                            overlayColor: Colors.transparent, // 이게 핵심!
+                            shadowColor: Colors.transparent, // 그림자도 제거
+                            elevation: 0, // 높이도 0
                           ),
+                          child: Text('아이디 찾기'),
                         ),
-                        Text('|'),
-                        TextButton(
+                        SizedBox(width: 10),
+                        Text('|', style: TextStyle(color: Color(0XFF757575))),
+                        SizedBox(width: 10),
+                        ElevatedButton(
                           onPressed: () {},
-                          child: Text(
-                            '비밀번호 찾기',
-                            style: TextStyle(color: Color(0xFF757575)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.background,
+                            foregroundColor: Color(0XFF757575),
+                            // 모든 효과 제거!
+                            overlayColor: Colors.transparent, // 이게 핵심!
+                            shadowColor: Colors.transparent, // 그림자도 제거
+                            elevation: 0, // 높이도 0
                           ),
+                          child: Text('패스워드 찾기'),
                         ),
                       ],
                     ),
@@ -116,10 +216,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                     ),
                     child: Text(
                       '로그인',
@@ -153,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(width: 15),
                     InkWell(
                       onTap: () {
-                        print('카카오 클릭');
+                        _loginWithKakao();
                       },
                       borderRadius: BorderRadius.circular(25),
                       child: SizedBox(
