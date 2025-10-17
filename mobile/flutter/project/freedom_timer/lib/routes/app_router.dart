@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:freedom_timer/screens/account_screen.dart';
+import 'package:freedom_timer/screens/community_page.dart';
 import 'package:freedom_timer/screens/kakao_login.dart';
 import 'package:freedom_timer/screens/login_intro_screen.dart';
+import 'package:freedom_timer/screens/statistics_page.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/home_screen.dart';
 import '../screens/splash_screen.dart';
@@ -28,6 +30,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: AppRoutes.home,
           builder: (context, state) => HomeScreen(),
+        ),
+        GoRoute(
+          path: AppRoutes.statistics,
+          builder: (context, state) => StatisticsPage(),
         ),
         GoRoute(
           path: AppRoutes.timer,

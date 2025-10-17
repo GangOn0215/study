@@ -9,10 +9,12 @@ class FooterNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final paths = [
       '/home',
+      '/statistics',
       '/timer',
+      '/community',
       '/account',
-      '/login',
-      '/kakao_login',
+      // '/login',
+      // '/kakao_login',
     ]; // 탭에 대응하는 경로들
     final String currentPath = GoRouterState.of(context).uri.toString();
 
@@ -39,16 +41,20 @@ class FooterNavigation extends StatelessWidget {
       elevation: 10,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart),
+          label: 'Statistics',
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Timer'),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_rounded),
           label: 'Account',
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.lock_open), label: 'Login'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.task_alt_rounded),
-          label: 'Kakao',
-        ),
+        // BottomNavigationBarItem(icon: Icon(Icons.lock_open), label: 'Login'),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.task_alt_rounded),
+        //   label: 'Kakao',
+        // ),
       ],
     );
   }

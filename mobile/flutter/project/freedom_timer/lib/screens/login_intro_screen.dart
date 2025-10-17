@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:freedom_timer/provider/kakao_auth_provider.dart';
 import 'package:freedom_timer/screens/kakao_login_webview.dart';
 import 'package:freedom_timer/services/api/kakao_auth_service.dart';
 import 'package:freedom_timer/theme/app_colors.dart';
@@ -40,7 +39,7 @@ class _LoginIntroScreenState extends State<LoginIntroScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final loginUrl = await KakaoAuthProvider().getLoginUrl();
+      final loginUrl = await _kakaoAuth.getLoginUrl();
 
       if (!mounted) return;
 
