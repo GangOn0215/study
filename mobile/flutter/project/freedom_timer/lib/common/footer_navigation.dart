@@ -47,6 +47,10 @@ class FooterNavigation extends StatelessWidget {
         ),
         BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Timer'),
         BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark_border),
+          label: 'Community',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_rounded),
           label: 'Account',
         ),
