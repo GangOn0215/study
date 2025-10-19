@@ -78,8 +78,48 @@ class _MainAppState extends State<MainApp> {
                 //    >> marker 표시가 자동으로 표시 됨
                 //    >> ( 2025-10-15일에 2개, 16일에 1개 )
                 eventLoader: _getEventsForDay,
-                selectedDayPredicate: _selectedDayPredicate,
-                onDaySelected: _onDaySelected,
+
+                // CalendarBuilders는 UI 커스텀 마이징 하기 위한 속성
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, day, events) {
+                    if (events.isEmpty) return SizedBox();
+
+                    // Positioned로 하단에 고정
+                    return Positioned(
+                      bottom: -4,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // ... 은 스프레드 연산자로
+                          // .take 는 앞 3개의 데이터만 가져온다
+                          ...events.take(3).map((event) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 1),
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Colors.blue,
+                              ),
+                            );
+                          }),
+                          // 🎯 3개 넘으면 "+N" 표시
+                          if (events.length > 3)
+                            Padding(
+                              padding: EdgeInsets.only(left: 2),
+                              child: Text(
+                                '+${events.length - 3}',
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],
