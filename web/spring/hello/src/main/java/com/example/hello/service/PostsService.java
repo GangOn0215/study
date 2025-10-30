@@ -12,18 +12,20 @@ import java.util.List;
 @Service
 public class PostsService {
     public final PostsRepository postRepository;
+    private final PostsRepository postsRepository;
 
     @Autowired
-    public PostsService(PostsRepository postRepository) {
+    public PostsService(PostsRepository postRepository, PostsRepository postsRepository) {
         this.postRepository = postRepository;
+        this.postsRepository = postsRepository;
     }
 
     public List<Posts> getAll() {
         return postRepository.findAll();
     }
 
-    public List<Posts> getAllWithUser() {
-        return postRepository.findAllWithUser();
+    public List<Posts> getAllPosts() {
+        return postsRepository.findAllWithUser();
     }
 
     public Posts create(Posts posts) {
