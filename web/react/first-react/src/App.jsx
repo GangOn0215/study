@@ -1,90 +1,46 @@
 import { useState } from 'react'
 import './App.css'
-
-function Greeting() {
-  return <h1>Hello!</h1>;
-}
-
-// 프로필 컴포넌트 ( Props 를 추가해보자)
-function Profile({name, hobby, favFood}) {
-
-  return (
-    <div style={{
-      padding: '20px',
-      border: '2px solid #4299e1',
-      borderRadius: '8px',
-      margin: '20px'
-    }}>
-      <h2>{name}</h2>
-      <p>취미: {hobby}</p>
-      <p>좋아하는 음식: {favFood}</p> 
-    </div>
-  )
-}
-
-// 컴포넌트 Props
-function Welcome(props) {
-  return <h1>Welcome, {props.name}!</h1>;
-}
-
-// 기본값
-function Button({ text = "Click me", color="blue"}) {
-  return (
-    <button style={{ backgroundColor: color, color: 'white', padding: '10px', border: 'none', borderRadius: '5px' }}>
-      {text}
-    </button>
-  )
-}
-
-// Product Card
-function ProductCard({ name, price, image, isStock }) {
-  return (
-    <div style={{
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      padding: '15px',
-      margin: '10px',
-      width: '200px',
-      boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-    }}>
-      <img src={image} alt={name} style={{ width: '100%', borderRadius: '4px'}} />
-      <h3>{name}</h3>
-      <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#e53e3e'}}>{price.toLocaleString()}</p>
-      <p style={{ color: isStock ? 'green' : 'red'}}> {isStock ? '재고 있음' : '품절'} </p>
-    </div>
-  )
-}
+import A01Greeting from './components/a01_Greeting'
+import A02Props from './components/a02_Props'
+import A03Profile from './components/a03_Profile'
+import A04ProductCard from './components/a04_productCard'
+import A05UserCard from './components/a05_userCard'
+import A06FruitList from './components/a06_fruitList'
+import A07Counter from './components/a07_counter'
+import A08Toggle from './components/a08_toggle'
+import A09LikeButton from './components/a09_likeButton'
+import A10InputBox from './components/a10_inputBox'
+import A11TodoList from './components/a11_todoList'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const fruits = [        // ← 배열 전체
+    { id: 1, name: '사과', emoji: '🍎' },
+    { id: 2, name: '바나나', emoji: '🍌' },
+    { id: 3, name: '포도', emoji: '🍇' },
+  ]
   return (
     <>
-      {/* <div>{count}</div> */}
-      {/* <button onClick={() => setCount(count+1)}> Increment </button> */}
-
-      {/* <Greeting /> */}
-      {/* <Greeting /> */}
-      {/* <Greeting /> */}
-
-      {/* <Profile name="Jun" favFood="Susi" hobby="11" /> */}
-      {/* <Profile name="Alice" hobby="Reading" favFood="Pasta" /> */}
-      {/* <Profile name="Bob" hobby="Hiking" favFood="Steak" /> */}
-
-      {/* <Welcome name="Jun" /> */}
-      {/* <Welcome name="Alice" /> */}
-      {/* <Welcome name="Bob" /> */}
-
-      {/* <Button text="Submit" color="green" /> */}
-      {/* <Button text="Cancel" color="red" /> */}
-      {/* <Button /> */}
-
-      <ProductCard 
+      {/* <A01Greeting /> */}
+      {/* <A02Props name="Jun" /> */}
+      {/* <A03Profile name="Jun" favFood="Susi" hobby="11" /> */}
+      {/* 
+      <A04ProductCard 
         name="노트북" 
         price={1500000} 
-        image="https://unsplash.com/ko/%EC%82%AC%EC%A7%84/a-macbook-with-lines-of-code-on-its-screen-on-a-busy-desk-m_HRfLhgABo" 
+        image="https://images.unsplash.com/photo-1603302576837-37561b2e2302?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
         isStock={true}
-      />
+      /> 
+      */}
+      {/*  */}
+      {/* <A05UserCard name={'Jack'} age={20} isPremium={true}/> */}
+      {/* <A05UserCard name={'Alice'} age={17} isPremium={true}/> */}
+      {/* <A06FruitList fruits={fruits} /> */}
+      {/* <A07Counter /> */}
+      {/* <A08Toggle /> */}
+      {/* <A09LikeButton /> */}
+      {/* <A10InputBox /> */}
+      <A11TodoList />
     </>
   );
 }
