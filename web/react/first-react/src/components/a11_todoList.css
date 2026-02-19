@@ -91,7 +91,8 @@
 }
 
 /* Checkbox button */
-.todo-check-btn {
+.todo-check-btn,
+.todo-trash-btn {
     background: none !important;
     border: none !important;
     padding: 0 !important;
@@ -105,7 +106,16 @@
     border-radius: 0 !important;
 }
 
-.todo-check-btn:hover {
+.todo-check-btn {
+    margin-right: .3rem;
+}
+
+.todo-check-btn:hover,
+.todo-trash-btn:hover {
     color: #c2185b;
     border-color: transparent !important;
+}
+
+.todo-button-wrap {
+    display: flex;
 }

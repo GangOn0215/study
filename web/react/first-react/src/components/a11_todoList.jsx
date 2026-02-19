@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { MdOutlineCheckBox } from "react-icons/md";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import { HiOutlineTrash } from "react-icons/hi";
 import './a11_todoList.css';
 
 /**
- * TODO : 정리해야 할 것
- *      0. delete 함수 완성
- *      1. ES6 >> Array.prototype.map & Array.prototype.filter, Spread
+ * TODO : 
+ *      0. ☑ delete 함수 완성
+ *      1. ES6 >> Array.prototype.map & Array.prototype.filter, Spread 정리
  *      2. React onClick 에서  onClick={() => {onUpdateTodos(id)} 으로 넣는것과 onClick={onUpdateTodos(id)} 로 넣는 것 차이 정리
  *      3. [ Library ] React Icons 정리
  */
@@ -23,8 +24,6 @@ function A11TodoList() {
 
     // create
     function onAddTodos() {
-        console.log(todos);
-
         setTodos([...todos, { id: lastIndex, title: todoTitle, isComplete: false }]);
         setLastIndex(lastIndex + 1);
 
@@ -32,17 +31,19 @@ function A11TodoList() {
     }
 
     // delete
-    function onDelTodos() {
+    function onDelTodos(id) {
+        const newTodos = todos.filter((todo) => {
+            return todo.id !== id;
+        });
 
+        setTodos(newTodos);
     }
 
     // update
     function onUpdateTodos(id) {
         const newTodos = todos.map((todo) => {
-            return todo.id == id ? { ...todo, isComplete: !todo.isComplete } : todo
+            return todo.id === id ? { ...todo, isComplete: !todo.isComplete } : todo
         })
-
-        console.log(newTodos);
 
         setTodos(newTodos);
     }
@@ -58,7 +59,10 @@ function A11TodoList() {
                 {todos.map((todo) => (
                     <p key={todo.id} className={`todo-item ${todo.isComplete ? 'completed' : ''}`}>
                         <span>{todo.title}</span>
-                        <button className="default-button todo-check-btn" onClick={() => onUpdateTodos(todo.id)}> { todo.isComplete ? <MdOutlineCheckBox /> : <MdOutlineCheckBoxOutlineBlank />} </button>
+                        <div className="todo-button-wrap">
+                            <button className="default-button todo-check-btn" onClick={() => onUpdateTodos(todo.id)}> { todo.isComplete ? <MdOutlineCheckBox /> : <MdOutlineCheckBoxOutlineBlank />} </button>
+                            <button className="default-button todo-trash-btn" onClick={() => onDelTodos(todo.id)}><HiOutlineTrash /></button>
+                        </div>
                     </p>
                 ))}
             </div>
