@@ -42,8 +42,8 @@ function A11TodoList() {
     setTodos(newTodos);
   }
 
-  // update
-  function onUpdateTodos(id) {
+  // complete toggle
+  function onToggleTodos(id) {
     const newTodos = todos.map((todo) => {
       return todo.id === id ? { ...todo, isComplete: !todo.isComplete } : todo;
     });
@@ -75,7 +75,7 @@ function A11TodoList() {
             <div className="todo-button-wrap">
               <button
                 className="default-button todo-check-btn"
-                onClick={() => onUpdateTodos(todo.id)}
+                onClick={() => onToggleTodos(todo.id)}
               >
                 {" "}
                 {todo.isComplete ? (
