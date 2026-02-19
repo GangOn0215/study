@@ -107,22 +107,43 @@ function A11TodoList() {
       </p>
       <div className="todo-list">
         {todos.map((todo) => (
-          <p
+          <div
             key={todo.id}
-            className={`todo-item ${todo.isComplete ? "completed" : ""}`}
+            className={`todo-item
+                            ${todo.isComplete ? "completed" : ""}`}
           >
-            <span>{todo.title}</span>
+            {todo.isEditing ? (
+              <input
+                type="text"
+                value={todoEditTitle}
+                onChange={(e) => setTodoEditTitle(e.target.value)}
+              />
+            ) : (
+              <span onDoubleClick={() => onIsEditingMode(todo.id)}>
+                {todo.title}
+              </span>
+            )}
+
             <div className="todo-button-wrap">
               <button
                 className="default-button todo-check-btn"
                 onClick={() => onToggleTodos(todo.id)}
               >
-                {" "}
-                {todo.isComplete ? (
-                  <MdOutlineCheckBox />
-                ) : (
-                  <MdOutlineCheckBoxOutlineBlank />
-                )}{" "}
+                  {!todo.isEditing ? (
+                      todo.isComplete ? <MdOutlineCheckBox /> : <MdOutlineCheckBoxOutlineBlank />
+                  ) : (
+                      <></>
+                  )}
+              </button>
+              <button
+                  className="default-button todo-edit-btn"
+                  onClick={() => todo.isEditing ? onUpdateTodos(todo.id) : onToggleEdit(todo.id)}
+              >
+              {!todo.isComplete ? (
+                todo.isEditing ?
+                  <PiCheckFatBold  /> : <FiEdit3 />
+              ) : <></>}
+
               </button>
               <button
                 className="default-button todo-trash-btn"
@@ -131,7 +152,7 @@ function A11TodoList() {
                 <HiOutlineTrash />
               </button>
             </div>
-          </p>
+          </div>
         ))}
       </div>
     </div>
