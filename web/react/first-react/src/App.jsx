@@ -1,24 +1,27 @@
-import { useState } from 'react'
-import './App.css'
-import A01Greeting from './components/a01_Greeting'
-import A02Props from './components/a02_Props'
-import A03Profile from './components/a03_Profile'
-import A04ProductCard from './components/a04_productCard'
-import A05UserCard from './components/a05_userCard'
-import A06FruitList from './components/a06_fruitList'
-import A07Counter from './components/a07_counter'
-import A08Toggle from './components/a08_toggle'
-import A09LikeButton from './components/a09_likeButton'
-import A10InputBox from './components/a10_inputBox'
-import A11TodoList from './components/a11_todoList'
+// import { useState } from "react";
+import "./App.css";
+import A01Greeting from "./components/a01_Greeting";
+import A02Props from "./components/a02_Props";
+import A03Profile from "./components/a03_Profile";
+import A04ProductCard from "./components/a04_productCard";
+import A05UserCard from "./components/a05_userCard";
+import A06FruitList from "./components/a06_fruitList";
+import A07Counter from "./components/a07_counter";
+import A08Toggle from "./components/a08_toggle";
+import A09LikeButton from "./components/a09_likeButton";
+import A10InputBox from "./components/a10_inputBox";
+import A11TodoList from "./components/a11_todoList";
+import A12CartMain from "./components/a12_cartMain";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  /*
   const fruits = [        // ← 배열 전체
     { id: 1, name: '사과', emoji: '🍎' },
     { id: 2, name: '바나나', emoji: '🍌' },
     { id: 3, name: '포도', emoji: '🍇' },
   ]
+  */
   return (
     <>
       {/* <A01Greeting /> */}
@@ -40,10 +43,11 @@ function App() {
       {/* <A08Toggle /> */}
       {/* <A09LikeButton /> */}
       {/* <A10InputBox /> */}
-      <A11TodoList />
+      {/* <A11TodoList /> */}
+
+      <A12CartMain />
     </>
   );
 }
 
-export default App
-
+export default App;
