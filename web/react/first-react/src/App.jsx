@@ -12,6 +12,7 @@ import A09LikeButton from "./components/a09_likeButton";
 import A10InputBox from "./components/a10_inputBox";
 import A11TodoList from "./components/a11_todoList";
 import A12CartMain from "./components/a12_cartMain";
+import B01UseEffect from "./components/b01_useEffect";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -44,8 +45,8 @@ function App() {
       {/* <A09LikeButton /> */}
       {/* <A10InputBox /> */}
       {/* <A11TodoList /> */}
-
-      <A12CartMain />
+      {/* <A12CartMain /> */}
+      <B01UseEffect />
     </>
   );
 }
