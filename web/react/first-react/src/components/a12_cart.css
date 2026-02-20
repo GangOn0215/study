@@ -1,82 +1,320 @@
-/* Cart wrapper */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --red: #FF5B5B;
+    --red-dark: #e04444;
+    --red-light: #fff0f0;
+    --blue: #9CCFFF;
+    --blue-dark: #5aabf5;
+    --blue-light: #f0f8ff;
+    --black: #1c1c1e;
+    --gray-1: #f7f7f8;
+    --gray-2: #ebebed;
+    --gray-3: #9a9aa8;
+    --white: #ffffff;
+
+    --font: 'Plus Jakarta Sans', sans-serif;
+    --radius: 14px;
+    --shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+}
+
+/* ── Page ─────────────────────────────────────────────── */
+.cart-page {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    width: 1200px;
+    /* max-width: 1600px; */
+    margin: 3rem auto;
+    padding: 0 3rem;
+    font-family: var(--font);
+}
+
+.cart-left-panel {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-right-panel {
+    width: 30%;
+    position: sticky;
+    top: 2rem;
+}
+
+/* ── Products section ─────────────────────────────────── */
 .cart-container {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(25, 113, 194, 0.12),
-    0 2px 8px rgba(233, 30, 99, 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border-top: 3px solid var(--blue);
 }
 
 .cart-container::before {
-  content: "🛒 장바구니";
-  display: block;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1971c2;
-  padding-bottom: 0.75rem;
-  border-bottom: 1.5px solid #e0e6f5;
-  margin-bottom: 0.25rem;
+    content: "상품 목록";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    padding: 1rem 1.25rem 0.6rem;
 }
 
-/* Product row */
 .product-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: #f8f9ff;
-  border: 1px solid #e0e6f5;
-  border-radius: 10px;
-  transition: background 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.75rem;
+    border-bottom: 1px solid var(--gray-2);
+    transition: background 0.15s;
+    gap: 1rem;
+}
+
+.product-container:last-child {
+    border-bottom: none;
 }
 
 .product-container:hover {
-  background: #eef2ff;
-  border-color: #c0ccee;
+    background: var(--blue-light);
 }
 
-/* Product name */
-.product-container > div:first-child {
-  font-size: 0.95rem;
-  color: #1a1a2e;
-  font-weight: 500;
+.product-container>div:first-child {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--black);
+    font-weight: 500;
 }
 
-/* Price */
-.product-container > div:first-child span {
-  margin-left: 0.5rem;
-  color: #1971c2;
-  font-weight: 700;
-  font-size: 0.9rem;
+.product-container>div:first-child span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--blue-dark);
 }
 
-/* Button group */
-.product-container > div:last-child {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+.product-container>div:last-child {
+    display: flex;
+    gap: 0.35rem;
 }
 
 .product-container button {
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-size: 1.4rem;
-  color: #e91e63;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  transition: color 0.15s, transform 0.1s;
+    background: var(--blue-light);
+    border: 1.5px solid var(--blue);
+    border-radius: 7px;
+    outline: none;
+    cursor: pointer;
+    color: var(--blue-dark);
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+    width: 100%;
 }
 
 .product-container button:hover {
-  color: #c2185b;
-  transform: scale(1.15);
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+}
+
+.product-container button:active {
+    background: var(--blue-dark);
+}
+
+.cart-item>div:last-child {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.cart-section button {
+    background: var(--red-light);
+    border: 1.5px solid var(--red);
+    border-radius: 7px;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--red);
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.cart-section button:hover {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+}
+
+.cart-section button:active {
+    background: var(--red-dark);
+}
+
+/* ── Cart section ─────────────────────────────────────── */
+.cart-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border-top: 3px solid var(--red);
+}
+
+.cart-section::before {
+    content: "장바구니";
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding: 1rem 1.25rem 0.6rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 1.1rem 1.75rem;
+    border-bottom: 1px solid var(--gray-2);
+    gap: 0.75rem;
+    transition: background 0.15s;
+}
+
+.cart-item:hover {
+    background: var(--red-light);
+}
+
+.cart-item-name {
+    text-align: left;
+    flex: 1;
+    font-size: 0.88rem;
+    color: var(--black);
+    font-weight: 500;
+}
+
+.cart-item-qty {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--red);
+    background: var(--red-light);
+    border: 1.5px solid var(--red);
+    border-radius: 20px;
+    padding: 0.1rem 0.55rem;
+    flex-shrink: 0;
+}
+
+.cart-item-price {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--black);
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 6.5rem;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 2.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gray-3);
+}
+
+.cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+    background: var(--gray-1);
+    border-top: 1px solid var(--gray-2);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gray-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cart-total-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: 0;
+}
+
+/* ── Payment box ──────────────────────────────────────── */
+.payment-box {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border-top: 3px solid var(--red);
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding: 1rem 1.25rem 0.6rem;
+    margin: 0;
+    border-bottom: 1px solid var(--gray-2);
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1.25rem 1.25rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gray-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.payment-amount {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: -0.02em;
+}
+
+.payment-btn {
+    margin: 0 1.25rem 1.25rem;
+    padding: 0.9rem;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-family: var(--font);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.payment-btn:hover {
+    background: var(--red-dark);
+    transform: translateY(-1px);
+}
+
+.payment-btn:active {
+    transform: translateY(0);
+}
+
+.payment-total-text {
+    margin-right: 10px;
 }
