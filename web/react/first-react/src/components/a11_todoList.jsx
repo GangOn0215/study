@@ -3,16 +3,15 @@ import { MdOutlineCheckBox } from "react-icons/md";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import { HiOutlineTrash } from "react-icons/hi";
 import { FiEdit3 } from "react-icons/fi";
-import { PiCheckFatBold  } from "react-icons/pi";
+import { PiCheckFatBold } from "react-icons/pi";
 import "./a11_todoList.css";
 
 /**
  * TODO :
- *      0. ☑ delete 함수 완성
+ *      ☑ delete 함수 완성
  *      1. ES6 >> Array.prototype.map & Array.prototype.filter, Spread 정리
  *      2. React onClick 에서  onClick={() => {onUpdateTodos(id)} 으로 넣는것과 onClick={onUpdateTodos(id)} 로 넣는 것 차이 정리
- *      3. [ Library ] React Icons 정리
- *
+ *      ☑ [ Library ] React Icons 정리
  *
  * [ 260219 ]
  *    > toggle Edit & edit 모드
@@ -23,6 +22,7 @@ function A11TodoList() {
   const [todoTitle, setTodoTitle] = useState("");
   const [todoEditTitle, setTodoEditTitle] = useState("");
   const [todos, setTodos] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   /**
    * CRUD
@@ -36,32 +36,28 @@ function A11TodoList() {
       ...todos,
       { id: lastIndex, title: todoTitle, isComplete: false, isEditing: false },
     ]);
+
     setLastIndex(lastIndex + 1);
 
     setTodoTitle("");
   }
 
-  // delete
-  function onDelTodos(id) {
-    const newTodos = todos.filter((todo) => {
-      return todo.id !== id;
-    });
-
-    setTodos(newTodos);
-  }
-
   // editmode toggle
   function onToggleEdit(id) {
+    if (isEditing) {
+      alert("이미 수정 중 입니다.");
+      return;
+    }
+
     const newTodos = todos.map((todo) => {
       if (todo.id === id && !todo.isComplete) {
         // 만약 todo id 가 동일하며, 완료 상태가 아니라면.
         setTodoEditTitle(todo.title);
-
+        setIsEditing(true);
         return { ...todo, isEditing: !todo.isEditing };
       } else {
         return todo;
       }
-
     });
 
     setTodos(newTodos);
@@ -78,6 +74,7 @@ function A11TodoList() {
         : todo; // todo.id ( 순회하며 id ) 와 업데이트 시킬 id가 같다면.
     });
 
+    setIsEditing(false);
     setTodos(newTodos);
     setTodoEditTitle("");
   }
@@ -89,6 +86,17 @@ function A11TodoList() {
     });
 
     setTodos(newTodos);
+  }
+
+  // delete
+  function onDelTodos(id) {
+    const newTodos = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+
+    if (confirm("정말 삭제 하시겠습니까?")) {
+      setTodos(newTodos);
+    }
   }
 
   // Read
@@ -114,14 +122,13 @@ function A11TodoList() {
           >
             {todo.isEditing ? (
               <input
+                className="todo-edit-input"
                 type="text"
                 value={todoEditTitle}
                 onChange={(e) => setTodoEditTitle(e.target.value)}
               />
             ) : (
-              <span onDoubleClick={() => onIsEditingMode(todo.id)}>
-                {todo.title}
-              </span>
+              <span>{todo.title}</span>
             )}
 
             <div className="todo-button-wrap">
@@ -129,21 +136,23 @@ function A11TodoList() {
                 className="default-button todo-check-btn"
                 onClick={() => onToggleTodos(todo.id)}
               >
-                  {!todo.isEditing ? (
-                      todo.isComplete ? <MdOutlineCheckBox /> : <MdOutlineCheckBoxOutlineBlank />
+                {!todo.isEditing &&
+                  (todo.isComplete ? (
+                    <MdOutlineCheckBox />
                   ) : (
-                      <></>
-                  )}
+                    <MdOutlineCheckBoxOutlineBlank />
+                  ))}
               </button>
               <button
-                  className="default-button todo-edit-btn"
-                  onClick={() => todo.isEditing ? onUpdateTodos(todo.id) : onToggleEdit(todo.id)}
+                className="default-button todo-edit-btn"
+                onClick={() =>
+                  todo.isEditing
+                    ? onUpdateTodos(todo.id)
+                    : onToggleEdit(todo.id)
+                }
               >
-              {!todo.isComplete ? (
-                todo.isEditing ?
-                  <PiCheckFatBold  /> : <FiEdit3 />
-              ) : <></>}
-
+                {!todo.isComplete &&
+                  (todo.isEditing ? <PiCheckFatBold /> : <FiEdit3 />)}
               </button>
               <button
                 className="default-button todo-trash-btn"
