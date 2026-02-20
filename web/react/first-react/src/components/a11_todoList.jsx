@@ -117,8 +117,7 @@ function A11TodoList() {
         {todos.map((todo) => (
           <div
             key={todo.id}
-            className={`todo-item
-                            ${todo.isComplete ? "completed" : ""}`}
+            className={`todo-item ${todo.isComplete ? "completed" : ""}`}
           >
             {todo.isEditing ? (
               <input
