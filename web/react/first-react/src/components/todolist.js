@@ -2,6 +2,9 @@ const a = [1, 2, 3]; // ?
 const b = [...a]; // ?
 const c = [...a, 4]; // ?
 
+console.log(b);
+console.log(c);
+
 let todos = [
   { id: 1, title: "공부", isComplete: false },
   { id: 2, title: "운동", isComplete: true },
